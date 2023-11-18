@@ -1,30 +1,50 @@
 <?php
 
 namespace App\Entity;
+
+use App\Repository\ConnectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="st_connect")
- * */
+#[ORM\Entity(repositoryClass: ConnectRepository::class)]
+class Connect
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
- class Connect
- {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    public $id;
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    public $email;
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    public $password;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
- }
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+}

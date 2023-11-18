@@ -1,41 +1,51 @@
 <?php
 
 namespace App\Entity;
+
+use App\Repository\CommentRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="st_comment")
- * */
+#[ORM\Entity(repositoryClass: CommentRepository::class)]
+class Comment
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
- class Comment
- {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    public $id;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $comment = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    public $comment;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    public $date;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Profil")
-     * @ORM\JoinColumn(name="st_profil", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     */
-    public $id_profil;
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Figure")
-     * @ORM\JoinColumn(name="st_figure", referencedColumnName="id", nullable=false)
-     */
-    public $id_figure;
- }
+    public function setComment(string $comment): static
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): static
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+}
