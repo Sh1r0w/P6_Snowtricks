@@ -1,40 +1,81 @@
 <?php
 
 namespace App\Entity;
+
+use App\Repository\FigureRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="st_figure")
- * */
+#[ORM\Entity(repositoryClass: FigureRepository::class)]
+class Figure
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
- class Figure
- {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    public $id;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    public $title;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    public $description;
+    #[ORM\Column]
+    private ?int $category = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    public $group;
+    #[ORM\Column(length: 500)]
+    private ?string $media = null;
 
-    /**
-     * @ORM\Column(type="string")
-     */
-    public $media;
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
- }
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCategory(): ?int
+    {
+        return $this->category;
+    }
+
+    public function setCategory(int $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getMedia(): ?string
+    {
+        return $this->media;
+    }
+
+    public function setMedia(string $media): static
+    {
+        $this->media = $media;
+
+        return $this;
+    }
+}
