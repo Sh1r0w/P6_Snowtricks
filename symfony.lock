@@ -126,7 +126,7 @@
         }
     },
     "symfony/messenger": {
-        "version": "6.1",
+        "version": "6.3",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -263,6 +263,9 @@
         "files": [
             "./config/packages/messenger.yaml"
         ]
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.14.0"
     },
     "twig/extra-bundle": {
         "version": "v3.7.1"
