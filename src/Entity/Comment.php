@@ -20,6 +20,10 @@ class Comment
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Profil $profil = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +49,23 @@ class Comment
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function __construct()
+    {
+        $this->setDate = new \DateTime();
+    }
+
+    public function getProfil(): ?Profil
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(Profil $profil): static
+    {
+        $this->profil = $profil;
 
         return $this;
     }

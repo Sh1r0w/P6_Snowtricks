@@ -13,13 +13,13 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $figure = new Figure();
-        $figure->setTitle(title: 'Test');
-        $figure->setDescription(description: 'Premier Test');
-        $figure->setCategory(category: '2');
-        $figure->setMedia(media: '');
+        /*$figure = new Figure();
+        $figure->setTitle(title: 'Test')
+                ->setDescription(description: 'Premier Test')
+                ->setCategory(category: '2')
+                ->setMedia(media: '');
         $entityManager->persist($figure);
-        $entityManager->flush();
+        $entityManager->flush();*/
         return $this->render('home.twig', [
             'controller_name' => 'HomeController',
         ]);
