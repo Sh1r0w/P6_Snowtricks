@@ -8,4 +8,8 @@
 
         <h1>Home Page<h1>
 
+        {% for f in figures %}
+            {{ dump(f) }}
+        {% endfor %}
+
     {% endblock %}

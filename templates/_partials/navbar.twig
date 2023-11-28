@@ -1,30 +1,29 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom sticky-lg-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <a class="navbar-brand d-none d-lg-block" href="#">Navbar</a>
+      <ul class="col-12 col-lg-auto navbar-nav ms-lg-auto mb-2 mb-lg-0 flex-row justify-content-around">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
+          <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}"><p class="d-none d-lg-block">Home</p>
+          <i class="fa-solid fa-house d-block d-lg-none"></i></a>
         </li>
-        
-      </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             {% if app.user %}
                 <li class="nav-item"> 
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Deconnection</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Deconnection
+                      <i class="fa-solid fa-right-from-bracket d-block d-lg-none"></i>
+                    </a>
                 </li>     
             {% else %}
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Login</a>
+              <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}"><p class="d-none d-lg-block">Enregistrement</p>
+                      <i class="fa-solid fa-bookmark d-block d-lg-none"></i>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Enregistrement</a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}"><p class="d-none d-lg-block">Login</p>
+                      <i class="fa-solid fa-right-to-bracket d-block d-lg-none"></i>
+                    </a>
                 </li>
             {% endif %}
         </ul>
-    </div>
   </div>
 </nav>
