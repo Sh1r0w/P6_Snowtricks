@@ -21,7 +21,7 @@ class Profil
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?connect $id_connect = null;
+    private ?Connect $id_connect = null;
 
     public function getId(): ?int
     {
@@ -52,12 +52,12 @@ class Profil
         return $this;
     }
 
-    public function getIdConnect(): ?connect
+    public function getIdConnect(): ?Connect
     {
         return $this->id_connect;
     }
 
-    public function setIdConnect(connect $id_connect): static
+    public function setIdConnect(Connect $id_connect): static
     {
         $this->id_connect = $id_connect;
 
