@@ -23,13 +23,13 @@ class Figure
     #[ORM\Column(length: 500)]
     private ?string $media = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $Categories = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Profil::class,  cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Profil $profil = null;
+    private ?Profil $Profil = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $datetime_add = null;
@@ -89,12 +89,12 @@ class Figure
 
     public function getProfil(): ?Profil
     {
-        return $this->profil;
+        return $this->Profil;
     }
 
-    public function setProfil(Profil $profil): static
+    public function setProfil(Profil $Profil): static
     {
-        $this->profil = $profil;
+        $this->Profil = $Profil;
 
         return $this;
     }
@@ -103,6 +103,7 @@ class Figure
     {
         return $this->datetime_add;
     }
+
 
     public function setDatetimeAdd(\DateTimeInterface $datetime_add): static
     {
@@ -113,6 +114,7 @@ class Figure
 
     public function __construct()
     {
-        $this->setDatetimeAdd = new \DateTime("now");
+        $this->datetime_add = new \DateTime();
     }
+
 }
