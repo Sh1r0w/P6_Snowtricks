@@ -5,41 +5,54 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Figure;
 use App\Entity\Categories;
 use App\Entity\Profil;
+use App\Form\FigureFormType;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
+    public function index(ManagerRegistry $doctrine): Response
     {
-
+        
         $figures = $doctrine->getRepository(Figure::class)->findAll();
-        
-        
-
-        /*$figure = new Figure();
-        $categories = $entityManager->getRepository(Categories::class)->find(1);
-        $profil = $entityManager->getRepository(Profil::class)->find(1);
-        $figure->setTitle('Test')
-                ->setDescription('Test')
-                ->setCategories($categories)
-                ->setProfil($profil)
-                ->setMedia('');
-        $entityManager->persist($figure);
-
-        try {
-            $entityManager->flush();
-        } catch (\Exception $e) {
-            echo 'Exception lors du flush : ', $e->getMessage(), "\n";
-        }*/
 
         return $this->render('home.twig', [
             'controller_name' => 'HomeController',
             'figures' => $figures,
+        ]);
+    }
+
+    #[Route('/addFigure', name: 'add_figure')]
+    public function add(EntityManagerInterface $entityManager, Request $request): Response
+    {
+
+        $figure = new Figure();
+
+        $figureForm = $this->createForm(FigureFormType::class, $figure);
+
+        $figureForm->handleRequest($request);
+        
+        if ($figureForm->isSubmitted() && $figureForm->isValid()) { 
+            $user = $this->getUser()->getId();
+            
+            $profil = $entityManager->getRepository(Profil::class)->findOneBy(['id_connect' => $user]);
+            $figure->setTitle($figure->getTitle())
+                ->setDescription($figure->getDescription())
+                ->setProfil($profil)
+                ->setMedia($figure->getMedia());
+        $entityManager->persist($figure);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_home');
+        }
+
+        return $this->render('forms/addFigure.html.twig',[
+            'figureForm' => $figureForm->createView()
         ]);
     }
 }

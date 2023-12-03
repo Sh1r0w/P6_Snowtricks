@@ -4,17 +4,21 @@
         
 {% endblock %}
 {% block body %}
-    <div class="home_banner bg-image d-flex justify-content-center align-items-center">
-        <h1>
-            Bienvenue sur le site communautaire SnowTricks
-        </h1>
+    <div class="home_banner">
+        <div class="overlay d-flex justify-content-center align-items-center h-100">
+                <h1>
+                    Bienvenue sur le site communautaire SnowTricks
+                </h1>
+        </div>
     </div>
     <div class="row m-0">
         <div class="col">
             <div class="d-flex flex-wrap justify-content-center">
                 {% for f in figures %}
                     <div class="card col-lg-2 m-2">
+                        {% if f.media %}
                         <img src="..." class="card-img-top" alt="...">
+                        {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">
                                 {{ f.title }}
