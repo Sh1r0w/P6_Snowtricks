@@ -1,0 +1,6 @@
+.home_banner {
+  background: url("../uploads/snow.jpg") no-repeat center;
+  background-size: cover;
+  height: 100vh;
+  color: white;
+}

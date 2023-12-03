@@ -21,11 +21,11 @@ class HomeController extends AbstractController
         
         
 
-        $figure = new Figure();
+        /*$figure = new Figure();
         $categories = $entityManager->getRepository(Categories::class)->find(1);
         $profil = $entityManager->getRepository(Profil::class)->find(1);
         $figure->setTitle('Test')
-                ->setDescription('Premier Test')
+                ->setDescription('Test')
                 ->setCategories($categories)
                 ->setProfil($profil)
                 ->setMedia('');
@@ -35,7 +35,7 @@ class HomeController extends AbstractController
             $entityManager->flush();
         } catch (\Exception $e) {
             echo 'Exception lors du flush : ', $e->getMessage(), "\n";
-        }
+        }*/
 
         return $this->render('home.twig', [
             'controller_name' => 'HomeController',

@@ -1,15 +1,31 @@
 {% extends 'base.html.twig' %}
-
-    {% block title %}
-        SnowTricks
-    {% endblock %}
-
-    {% block body %}
-
-        <img src="{{ asset('/img/snow.jpg') }}" class="img-fluid">
-
-        {% for f in figures %}
-            {{ dump(f) }}
-        {% endfor %}
-
-    {% endblock %}
+{% block title %}
+    SnowTricks
+        
+{% endblock %}
+{% block body %}
+    <div class="home_banner bg-image d-flex justify-content-center align-items-center">
+        <h1>
+            Bienvenue sur le site communautaire SnowTricks
+        </h1>
+    </div>
+    <div class="row m-0">
+        <div class="col">
+            <div class="d-flex flex-wrap justify-content-center">
+                {% for f in figures %}
+                    <div class="card col-lg-2 m-2">
+                        <img src="..." class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ f.title }}
+                            </h5>
+                            <p class="card-text">
+                                {{ f.description }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
