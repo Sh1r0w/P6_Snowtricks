@@ -1,7 +1,12 @@
 .home_banner {
   background: url("../uploads/snow.jpg") no-repeat center;
   background-size: cover;
-  height: 100vh;
+  background-position: center center;
+  background-attachment: fixed;
+  top: 0; 
+  left: 0; 
+  min-width: 100%;
+  max-height: 100%;
   color: white;
 }
 <<<<<<< refs/remotes/Sh1r0w/master
@@ -9,5 +14,7 @@
 .overlay {
     background-color: rgba(0, 0, 0, 0.5);
 }
-=======
->>>>>>> add img in home page
+
+.navLogo {
+  max-width: 25%;
+}
