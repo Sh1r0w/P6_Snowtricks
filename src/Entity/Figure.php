@@ -27,12 +27,15 @@ class Figure
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $Categories = null;
 
-    #[ORM\ManyToOne(targetEntity: Profil::class,  cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Connect::class,  cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Profil $Profil = null;
+    private ?Connect $Connect = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $datetime_add = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
 
     public function getId(): ?int
     {
@@ -87,14 +90,14 @@ class Figure
         return $this;
     }
 
-    public function getProfil(): ?Profil
+    public function getConnect(): ?Connect
     {
-        return $this->Profil;
+        return $this->Connect;
     }
 
-    public function setProfil(Profil $Profil): static
+    public function setConnect(Connect $Connect): static
     {
-        $this->Profil = $Profil;
+        $this->Connect = $Connect;
 
         return $this;
     }
@@ -115,6 +118,18 @@ class Figure
     public function __construct()
     {
         $this->datetime_add = new \DateTime();
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
 }

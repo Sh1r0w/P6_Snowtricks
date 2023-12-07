@@ -22,7 +22,7 @@ class Comment
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Profil $profil = null;
+    private ?Connect $connect = null;
 
     public function getId(): ?int
     {
@@ -58,14 +58,14 @@ class Comment
         $this->setDate = new \DateTime();
     }
 
-    public function getProfil(): ?Profil
+    public function getConnect(): ?Connect
     {
-        return $this->profil;
+        return $this->connect;
     }
 
-    public function setProfil(Profil $profil): static
+    public function setConnect(Connect $connect): static
     {
-        $this->profil = $profil;
+        $this->connect = $connect;
 
         return $this;
     }

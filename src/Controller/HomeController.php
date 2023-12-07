@@ -8,9 +8,10 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Entity\Figure;
+use App\Entity\Connect;
 use App\Entity\Categories;
-use App\Entity\Profil;
 use App\Form\FigureFormType;
 
 class HomeController extends AbstractController
@@ -38,13 +39,17 @@ class HomeController extends AbstractController
         $figureForm->handleRequest($request);
         
         if ($figureForm->isSubmitted() && $figureForm->isValid()) { 
+            $slugger = new AsciiSlugger();
+            $slug = $slugger->slug($figure->getTitle());
+
             $user = $this->getUser()->getId();
             
-            $profil = $entityManager->getRepository(Profil::class)->findOneBy(['id_connect' => $user]);
+            $connect = $entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
             $figure->setTitle($figure->getTitle())
                 ->setDescription($figure->getDescription())
-                ->setProfil($profil)
-                ->setMedia($figure->getMedia());
+                ->setConnect($connect)
+                ->setMedia($figure->getMedia())
+                ->setSlug($slug);
         $entityManager->persist($figure);
         $entityManager->flush();
 
