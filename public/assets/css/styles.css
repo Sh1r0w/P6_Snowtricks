@@ -14,3 +14,12 @@
 .navLogo {
   max-width: 25%;
 }
+
+.iconCard {
+  top: 10px;
+  right: 10px;
+}
+
+.iconCard .fa-pencil, .fa-trash-can {
+  cursor: pointer;
+}

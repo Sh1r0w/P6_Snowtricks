@@ -27,6 +27,10 @@
             <div class="d-flex flex-wrap justify-content-center">
                 {% for f in figures %}
                     <div class="card col-lg-2 m-2">
+                        <div class="iconCard position-absolute">
+                            <i class="fa-solid fa-pencil"></i>
+                            <i class="fa-regular fa-trash-can"></i>
+                        </div>
                         {% if f.media %}
                         <img src="..." class="card-img-top" alt="...">
                         {% endif %}
