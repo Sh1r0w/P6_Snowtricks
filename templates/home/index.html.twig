@@ -12,18 +12,18 @@
                     Bienvenue sur le site communautaire SnowTricks
                 </h1>
         </div>
-        
+        {% if app.user %}
+            <form action="{{ path('add_figure') }}">
+        <button class="btn btn-primary">Crée une tricks</button>
+        </form>
+        {% endif %}
 
         
     </div>
 
     <div class="row m-0">
         <div class="col">
-            {% if app.user %}
-                <form action="{{ path('add_figure') }}">
-            <button class="btn btn-primary">Crée une tricks</button>
-            </form>
-            {% endif %}
+            
             <div class="d-flex flex-wrap justify-content-center">
                 {% for f in figures %}
                     <div class="card col-lg-2 m-2">
