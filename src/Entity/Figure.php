@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\FigureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: FigureRepository::class)]
+#[UniqueEntity(fields: ['title'], message: 'Tricks déjà existant')]
 class Figure
 {
     #[ORM\Id]
@@ -19,9 +23,6 @@ class Figure
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
-
-    #[ORM\Column(length: 500)]
-    private ?string $media = null;
 
     #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -36,6 +37,9 @@ class Figure
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
+
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Media::class, cascade: ['persist'])]
+    private Collection $media;
 
     public function getId(): ?int
     {
@@ -62,18 +66,6 @@ class Figure
     public function setDescription(string $description): static
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getMedia(): ?string
-    {
-        return $this->media;
-    }
-
-    public function setMedia(string $media): static
-    {
-        $this->media = $media;
 
         return $this;
     }
@@ -118,6 +110,7 @@ class Figure
     public function __construct()
     {
         $this->datetime_add = new \DateTime();
+        $this->media = new ArrayCollection();
     }
 
     public function getSlug(): ?string
@@ -131,5 +124,37 @@ class Figure
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Media>
+     */
+    public function getMedia(): Collection
+    {
+        return $this->media;
+    }
+
+    public function addMedia(Media $medium): static
+    {
+        if (!$this->media->contains($medium)) {
+            $this->media->add($medium);
+            $medium->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMedium(Media $medium): static
+    {
+        if ($this->media->removeElement($medium)) {
+            // set the owning side to null (unless already changed)
+            if ($medium->getFigure() === $this) {
+                $medium->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 }

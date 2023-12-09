@@ -12,7 +12,9 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Entity\Figure;
 use App\Entity\Connect;
 use App\Entity\Categories;
+use App\Entity\Media;
 use App\Form\FigureFormType;
+use App\Services\ImgService;
 
 class HomeController extends AbstractController
 {
@@ -29,7 +31,11 @@ class HomeController extends AbstractController
     }
 
     #[Route('/addFigure', name: 'add_figure')]
-    public function add(EntityManagerInterface $entityManager, Request $request): Response
+    public function add(
+        EntityManagerInterface $entityManager, 
+        Request $request,
+        ImgService $imgService,
+        ): Response
     {
 
         $figure = new Figure();
@@ -41,6 +47,20 @@ class HomeController extends AbstractController
         if ($figureForm->isSubmitted() && $figureForm->isValid()) {
             $slugger = new AsciiSlugger();
             $slug = $slugger->slug($figure->getTitle());
+            
+            $images = $figureForm->get('media')->getData();
+
+            foreach($images as $media){
+                $folder = $figure->getTitle();
+
+                $fichier = $imgService->addImg($media, $folder, 300, 300);
+
+                $img = new Media();
+                $img->setName($fichier);
+                $figure->addMedia($img);
+                
+            }
+
 
             $user = $this->getUser()->getId();
 
@@ -48,7 +68,6 @@ class HomeController extends AbstractController
             $figure->setTitle($figure->getTitle())
                 ->setDescription($figure->getDescription())
                 ->setConnect($connect)
-                ->setMedia($figure->getMedia())
                 ->setSlug($slug);
         $entityManager->persist($figure);
         $entityManager->flush();

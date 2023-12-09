@@ -1,5 +1,14 @@
 {
     "emmet.includeLanguages": {
         "twig": "html"
-    }
+    },
+    "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": true,
+    "intelephense.phpdoc.useFullyQualifiedNames": true,
+    "symfony-vscode.phpExecutablePath": "C:\\xampp\\php\\php.exe",
+    "symfony-vscode.fileWatchingPatterns": [
+
+        "yml",
+        "yaml",
+        "xml"
+    ]
 }
