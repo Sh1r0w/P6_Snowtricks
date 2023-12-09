@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Categories;
 use App\Entity\Figure;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,8 +24,11 @@ class FigureFormType extends AbstractType
                 'choice_label' => 'category',
                 'label' => 'Choix de la catégorie'
             ])
-            ->add('media', options: [
-                'label' => 'Image'
+            ->add('media', FileType::class, [
+                'label' => 'Image',
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
                 ])
         ;
     }
