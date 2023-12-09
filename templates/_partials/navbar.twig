@@ -1,27 +1,25 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-bottom sticky-lg-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand d-none d-lg-block" href="#">Navbar</a>
+    <a class="navbar-brand d-none d-lg-block" href="{{ path ('app_home') }}"><img class="navLogo" src=" {{ asset('assets/uploads/logo.png') }}" alt=""></a>
       <ul class="col-12 col-lg-auto navbar-nav ms-lg-auto mb-2 mb-lg-0 flex-row justify-content-around">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}"><p class="d-none d-lg-block">Home</p>
-          <i class="fa-solid fa-house d-block d-lg-none"></i></a>
+          <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Home</a>
         </li>
+        
+      </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             {% if app.user %}
                 <li class="nav-item"> 
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}">Deconnection
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_logout') }}"><p class="d-none d-lg-block">Deconnection</p>
                       <i class="fa-solid fa-right-from-bracket d-block d-lg-none"></i>
                     </a>
                 </li>     
             {% else %}
-              <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}"><p class="d-none d-lg-block">Enregistrement</p>
-                      <i class="fa-solid fa-bookmark d-block d-lg-none"></i>
-                    </a>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ path('app_login') }}"><p class="d-none d-lg-block">Login</p>
-                      <i class="fa-solid fa-right-to-bracket d-block d-lg-none"></i>
-                    </a>
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_register') }}">Enregistrement</a>
                 </li>
             {% endif %}
         </ul>

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+    <h1>Add Figure</h1>
+    
+    {{ form_start(figureForm) }}
+        {{ form_row(figureForm.title) }}
+        {{ form_row(figureForm.description) }}
+        {{ form_row(figureForm.categories) }}
+        {{ form_row(figureForm.media) }}
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(figureForm) }}
+    </div>
+    </div>
+{% endblock %}

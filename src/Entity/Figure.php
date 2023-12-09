@@ -23,16 +23,19 @@ class Figure
     #[ORM\Column(length: 500)]
     private ?string $media = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $Categories = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Connect::class,  cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Profil $profil = null;
+    private ?Connect $Connect = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $datetime_add = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
 
     public function getId(): ?int
     {
@@ -87,14 +90,14 @@ class Figure
         return $this;
     }
 
-    public function getProfil(): ?Profil
+    public function getConnect(): ?Connect
     {
-        return $this->profil;
+        return $this->Connect;
     }
 
-    public function setProfil(Profil $profil): static
+    public function setConnect(Connect $Connect): static
     {
-        $this->profil = $profil;
+        $this->Connect = $Connect;
 
         return $this;
     }
@@ -103,6 +106,7 @@ class Figure
     {
         return $this->datetime_add;
     }
+
 
     public function setDatetimeAdd(\DateTimeInterface $datetime_add): static
     {
@@ -113,6 +117,19 @@ class Figure
 
     public function __construct()
     {
-        $this->setDatetimeAdd = new \DateTime("now");
+        $this->datetime_add = new \DateTime();
     }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
 }
