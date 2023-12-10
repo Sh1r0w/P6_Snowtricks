@@ -12,7 +12,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Entity\Figure;
 use App\Entity\Connect;
 use App\Entity\Categories;
-use App\Entity\Media;
+use App\Entity\Image;
 use App\Form\FigureFormType;
 use App\Services\ImgService;
 
@@ -48,16 +48,16 @@ class HomeController extends AbstractController
             $slugger = new AsciiSlugger();
             $slug = $slugger->slug($figure->getTitle());
             
-            $images = $figureForm->get('media')->getData();
+            $images = $figureForm->get('image')->getData();
 
-            foreach($images as $media){
+            foreach($images as $image){
                 $folder = $figure->getTitle();
 
-                $fichier = $imgService->addImg($media, $folder, 300, 300);
+                $fichier = $imgService->addImg($image, $folder, 300, 300);
 
-                $img = new Media();
+                $img = new Image();
                 $img->setName($fichier);
-                $figure->addMedia($img);
+                $figure->addImage($img);
                 
             }
 

@@ -1,52 +1,48 @@
 {% extends 'base.html.twig' %}
 {% block title %}
     SnowTricks
-        
+            
+    
 {% endblock %}
 {% block body %}
-
     <div class="home_banner  text-center position-relative">
-        <img  class=" img-fluid w-100" src="{{ asset('assets/uploads/snow.jpg') }}" alt="">
-        <div class=" overlay d-flex position-absolute justify-content-center align-items-center">
-                <h1>
-                    Bienvenue sur le site communautaire SnowTricks
-                </h1>
-        </div>
-        {% if app.user %}
-            <form action="{{ path('add_figure') }}">
-        <button class="btn btn-primary">Crée une tricks</button>
-        </form>
-        {% endif %}
-
-        
-    </div>
-
-    <div class="row m-0">
-        <div class="col">
-            
-            <div class="d-flex flex-wrap justify-content-center">
-                {% for f in figures %}
-                    <div class="card col-lg-2 m-2">
-                        <img class="card-img-top" src="{{ asset('assets/uploads/') ~ f.title ~ ('/mini/300x300-') ~ f.media[0].name }}" alt="{{ f.title }}" >
-                        {% if app.user %}
-                        
-                        {% endif %}
-
-                        <div class="card-body position-relative">
-                            <div class="iconCard position-absolute">
-                            <i class="fa-solid fa-pencil"></i>
-                            <i class="fa-regular fa-trash-can"></i>
-                        </div>
-                            <h5 class="card-title">
-                                {{ f.title }}
-                            </h5>
-                            <p class="card-text">
-                                {{ f.description }}
-                            </p>
-                        </div>
-                    </div>
-                {% endfor %}
+        <img class=" img-fluid w-100" src="{{ asset('assets/uploads/snow.jpg') }}" alt="">
+            <div class=" overlay d-flex position-absolute justify-content-center align-items-center">
+                <form action="{{ path('add_figure') }}">
+                    <h1>
+                        Bienvenue sur le site communautaire SnowTricks
+                                        
+                    </h1>
+                    <button class="btn btn-primary">
+                        Crée une tricks
+                    </button>
+                </form>
             </div>
+            {% if app.user %}{% endif %}
         </div>
-    </div>
-{% endblock %}
+        <div class="row m-0">
+            <div class="col">
+                <div class="d-flex flex-wrap justify-content-center">
+                    {% for f in figures %}
+                        <div class="card col-lg-2 m-2">
+                            <img class="card-img-top" src="{{ asset('assets/uploads/') ~ f.title ~ ('/mini/300x300-') ~ f.image[0].name }}" alt="{{ f.title }}">
+                                {% if app.user %}{% endif %}
+                                <div class="card-body position-relative">
+                                    <div class="iconCard position-absolute">
+                                        <i class="fa-solid fa-pencil"></i>
+                                        <i class="fa-regular fa-trash-can"></i>
+                                    </div>
+                                    <h5 class="card-title">
+                                        {{ f.title }}
+                                    </h5>
+                                    <p class="card-text">
+                                        {{ f.description }}
+                                    </p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        

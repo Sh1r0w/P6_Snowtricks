@@ -38,8 +38,11 @@ class Figure
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Media::class, cascade: ['persist'])]
-    private Collection $media;
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Image::class, cascade: ['persist'])]
+    private Collection $image;
+
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Video::class, cascade: ['persist'])]
+    private Collection $videos;
 
     public function getId(): ?int
     {
@@ -110,7 +113,8 @@ class Figure
     public function __construct()
     {
         $this->datetime_add = new \DateTime();
-        $this->media = new ArrayCollection();
+        $this->image = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getSlug(): ?string
@@ -126,26 +130,26 @@ class Figure
     }
 
     /**
-     * @return Collection<int, Media>
+     * @return Collection<int, Image>
      */
-    public function getMedia(): Collection
+    public function getImage(): Collection
     {
-        return $this->media;
+        return $this->image;
     }
 
-    public function addMedia(Media $medium): static
+    public function addImage(Image $medium): static
     {
-        if (!$this->media->contains($medium)) {
-            $this->media->add($medium);
+        if (!$this->image->contains($medium)) {
+            $this->image->add($medium);
             $medium->setFigure($this);
         }
 
         return $this;
     }
 
-    public function removeMedium(Media $medium): static
+    public function removeMedium(Image $medium): static
     {
-        if ($this->media->removeElement($medium)) {
+        if ($this->image->removeElement($medium)) {
             // set the owning side to null (unless already changed)
             if ($medium->getFigure() === $this) {
                 $medium->setFigure(null);
@@ -154,6 +158,37 @@ class Figure
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Video>
+     */
+    public function getVideos(): Collection
+    {
+        return $this->videos;
+    }
+
+    public function addVideo(Video $video): static
+    {
+        if (!$this->videos->contains($video)) {
+            $this->videos->add($video);
+            $video->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVideo(Video $video): static
+    {
+        if ($this->videos->removeElement($video)) {
+            // set the owning side to null (unless already changed)
+            if ($video->getFigure() === $this) {
+                $video->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 
 
