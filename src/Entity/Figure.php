@@ -147,7 +147,7 @@ class Figure
         return $this;
     }
 
-    public function removeMedium(Image $medium): static
+    public function removeImage(Image $medium): static
     {
         if ($this->image->removeElement($medium)) {
             // set the owning side to null (unless already changed)

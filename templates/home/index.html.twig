@@ -24,13 +24,18 @@
             <div class="col">
                 <div class="d-flex flex-wrap justify-content-center">
                     {% for f in figures %}
+                        
                         <div class="card col-lg-2 m-2">
+                            <a class="nav-link" href="{{ path('app_home') ~ ('figure/') ~ f.slug }}">
+                            {% if f.image[0] is defined %}
                             <img class="card-img-top" src="{{ asset('assets/uploads/') ~ f.title ~ ('/mini/300x300-') ~ f.image[0].name }}" alt="{{ f.title }}">
+                            {% endif %}
+                            </a>
                                 {% if app.user %}{% endif %}
                                 <div class="card-body position-relative">
-                                    <div class="iconCard position-absolute">
-                                        <i class="fa-solid fa-pencil"></i>
-                                        <i class="fa-regular fa-trash-can"></i>
+                                    <div class="d-flex iconCard position-absolute z-2">
+                                        <a class="nav-link m-1" href="test"><i class="fa-solid fa-pencil"></i></a>
+                                        <a class="nav-link m-1" href="test"><i class="fa-regular fa-trash-can"></i></a>
                                     </div>
                                     <h5 class="card-title">
                                         {{ f.title }}
@@ -39,7 +44,9 @@
                                         {{ f.description }}
                                     </p>
                                 </div>
+                                
                             </div>
+                            
                         {% endfor %}
                     </div>
                 </div>

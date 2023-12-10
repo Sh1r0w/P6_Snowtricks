@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FigureController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="card align-items-center">
+            <h1>{{ figure.title }}</h1>
+            {% if figure.image[0] is defined %}
+                <img class="card-img-top imgDetail" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
+            {% endif %}       
+            <div class="card-body">
+                {{ figure.description }}
+            </div>
+            <div class="card-footer">
+                {{ dump(figure) }}
+                {{ figure.DatetimeAdd|date("H:m:s d/m/Y")}}
+        </div>
+    </div>
+</div>
+
+
+    
+
+
+
+{% endblock %}

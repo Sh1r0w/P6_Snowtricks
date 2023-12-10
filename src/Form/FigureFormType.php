@@ -30,6 +30,12 @@ class FigureFormType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 ])
+            ->add('videos', FileType::class, [
+                'label' => 'video',
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+                ])
         ;
     }
 

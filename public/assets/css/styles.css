@@ -23,3 +23,8 @@
 .iconCard .fa-pencil, .fa-trash-can {
   cursor: pointer;
 }
+
+.imgDetail {
+  max-width: 650px;
+  height: auto;
+}

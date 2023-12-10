@@ -68,6 +68,7 @@ class HomeController extends AbstractController
             $figure->setTitle($figure->getTitle())
                 ->setDescription($figure->getDescription())
                 ->setConnect($connect)
+                /*->setVideo($figure->getVideos())*/
                 ->setSlug($slug);
         $entityManager->persist($figure);
         $entityManager->flush();

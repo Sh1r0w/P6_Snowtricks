@@ -18,7 +18,7 @@ class Video
 
     #[ORM\ManyToOne(inversedBy: 'videos')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?figure $figure = null;
+    private ?Figure $figure = null;
 
     public function getId(): ?int
     {
@@ -37,12 +37,12 @@ class Video
         return $this;
     }
 
-    public function getFigure(): ?figure
+    public function getFigure(): ?Figure
     {
         return $this->figure;
     }
 
-    public function setFigure(?figure $figure): static
+    public function setFigure(?Figure $figure): static
     {
         $this->figure = $figure;
 
