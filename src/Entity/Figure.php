@@ -24,11 +24,11 @@ class Figure
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Categories::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $Categories = null;
 
-    #[ORM\ManyToOne(targetEntity: Connect::class,  cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Connect::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Connect $Connect = null;
 
@@ -38,10 +38,10 @@ class Figure
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Image::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Image::class, cascade: ['remove'])]
     private Collection $image;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Video::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Video::class, cascade: ['remove'])]
     private Collection $videos;
 
     public function getId(): ?int

@@ -20,4 +20,21 @@ class FigureController extends AbstractController
 
         ]);
     }
+
+    #[Route('/delete/{id}', name: 'delete_figure')]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
+    {
+        $figure = $entityManager->getRepository(Figure::class)->find($id);
+
+        if (!$figure){
+            $this->createNotFoundException(
+                'Pas de figure avec l\' '.$id
+            );
+        }
+
+        $entityManager->remove($figure);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_home');
+    }
 }

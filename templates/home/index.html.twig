@@ -35,7 +35,7 @@
                                 <div class="card-body position-relative">
                                     <div class="d-flex iconCard position-absolute z-2">
                                         <a class="nav-link m-1" href="test"><i class="fa-solid fa-pencil"></i></a>
-                                        <a class="nav-link m-1" href="test"><i class="fa-regular fa-trash-can"></i></a>
+                                        <a class="nav-link m-1" href="{{ path('delete_figure', {id: f.id})  }}" onclick="return confirm('Are you sure?')"><i class="fa-regular fa-trash-can"></i></a>
                                     </div>
                                     <h5 class="card-title">
                                         {{ f.title }}
