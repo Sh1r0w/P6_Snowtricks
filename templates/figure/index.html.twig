@@ -14,9 +14,11 @@
                 {{ figure.description }}
             </div>
             <div class="card-footer">
-                {{ dump(figure) }}
                 {{ figure.DatetimeAdd|date("H:m:s d/m/Y")}}
         </div>
+        {{ form_start(commentForm) }}
+        {{ form_row(commentForm.comment) }}
+        {{ form_end(commentForm) }}
     </div>
 </div>
 

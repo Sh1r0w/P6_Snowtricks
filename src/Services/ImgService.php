@@ -82,24 +82,24 @@ class ImgService
     public function delete(
         string $fichier, 
         ?string $folder = '', 
-        ?int $width = 250, 
-    ?int $height = 250
+        ?int $width = 300, 
+    ?int $height = 300
     )
     {
-        if($file !== 'default.webp'){
+        if($fichier !== 'default.webp'){
             $success = false;
             $path = $this->params->get('images_directory') . $folder;
 
-            $mini = $path . '/mini/'  . $width . 'x' . $height . '-' . $fichier;
+            $mini = $path . 'mini/'  . $width . 'x' . $height . '-' . $fichier;
 
             if(file_exists($mini)){
-                unlink($mini);
+                rmdir($mini);
                 $success = true;
             }
 
-            $original = $path . '/' . $fichier;
+            $original = $path . $fichier;
             if(file_exists($original)){
-                unlink($mini);
+                rmdir($original);
                 $success = true;
             }
 
