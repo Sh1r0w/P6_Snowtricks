@@ -38,10 +38,10 @@ class Figure
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Image::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Image::class, cascade: ['persist', 'remove'])]
     private Collection $image;
 
-    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Video::class, cascade: ['remove'])]
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Video::class, cascade: ['persist', 'remove'])]
     private Collection $videos;
 
     public function getId(): ?int

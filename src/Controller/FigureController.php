@@ -32,6 +32,8 @@ class FigureController extends AbstractController
             );
         }
 
+        
+
         $entityManager->remove($figure);
         $entityManager->flush();
 

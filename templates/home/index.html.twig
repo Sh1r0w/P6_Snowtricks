@@ -13,12 +13,14 @@
                         Bienvenue sur le site communautaire SnowTricks
                                         
                     </h1>
+                {% if app.user %}
                     <button class="btn btn-primary">
                         Crée une tricks
                     </button>
+                {% endif %}
                 </form>
             </div>
-            {% if app.user %}{% endif %}
+            
         </div>
         <div class="row m-0">
             <div class="col">
@@ -31,7 +33,6 @@
                             <img class="card-img-top" src="{{ asset('assets/uploads/') ~ f.title ~ ('/mini/300x300-') ~ f.image[0].name }}" alt="{{ f.title }}">
                             {% endif %}
                             </a>
-                                {% if app.user %}{% endif %}
                                 <div class="card-body position-relative">
                                     <div class="d-flex iconCard position-absolute z-2">
                                         <a class="nav-link m-1" href="test"><i class="fa-solid fa-pencil"></i></a>
