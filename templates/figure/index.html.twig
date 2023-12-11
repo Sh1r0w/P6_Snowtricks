@@ -16,9 +16,19 @@
             <div class="card-footer">
                 {{ figure.DatetimeAdd|date("H:m:s d/m/Y")}}
         </div>
+        {% if app.user %}
         {{ form_start(commentForm) }}
         {{ form_row(commentForm.comment) }}
+        <button type="submit" class="btn btn-primary">Envoyer</button>
         {{ form_end(commentForm) }}
+        {% endif %}
+            {% for c in getComment %}
+                <div>
+                {{ c.comment }}
+                {{ c.date|date("H:m:s d/m/Y") }}
+                </div>
+            {% endfor %}
+        
     </div>
 </div>
 
