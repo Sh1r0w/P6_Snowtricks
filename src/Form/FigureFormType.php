@@ -24,8 +24,14 @@ class FigureFormType extends AbstractType
                 'choice_label' => 'category',
                 'label' => 'Choix de la catégorie'
             ])
-            ->add('media', FileType::class, [
+            ->add('image', FileType::class, [
                 'label' => 'Image',
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+                ])
+            ->add('videos', FileType::class, [
+                'label' => 'video',
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,

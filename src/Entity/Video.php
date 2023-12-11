@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\MediaRepository;
+use App\Repository\VideoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MediaRepository::class)]
-class Media
+#[ORM\Entity(repositoryClass: VideoRepository::class)]
+class Video
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,7 +16,7 @@ class Media
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'media')]
+    #[ORM\ManyToOne(inversedBy: 'videos')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Figure $figure = null;
 

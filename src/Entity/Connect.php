@@ -35,6 +35,9 @@ class Connect implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 30)]
     private ?string $username = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imguser = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -125,6 +128,18 @@ class Connect implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getImguser(): ?string
+    {
+        return $this->imguser;
+    }
+
+    public function setImguser(?string $imguser): static
+    {
+        $this->imguser = $imguser;
 
         return $this;
     }
