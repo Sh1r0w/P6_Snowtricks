@@ -20,9 +20,12 @@ class Comment
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Connect $connect = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    private ?Figure $figure = null;
 
     public function getId(): ?int
     {
@@ -55,7 +58,7 @@ class Comment
 
     public function __construct()
     {
-        $this->setDate = new \DateTime();
+        $this->date = new \DateTime();
     }
 
     public function getConnect(): ?Connect
@@ -66,6 +69,18 @@ class Comment
     public function setConnect(Connect $connect): static
     {
         $this->connect = $connect;
+
+        return $this;
+    }
+
+    public function getFigure(): ?Figure
+    {
+        return $this->figure;
+    }
+
+    public function setFigure(?Figure $figure): static
+    {
+        $this->figure = $figure;
 
         return $this;
     }

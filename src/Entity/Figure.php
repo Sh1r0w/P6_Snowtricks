@@ -44,6 +44,9 @@ class Figure
     #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Video::class, cascade: ['persist', 'remove'])]
     private Collection $videos;
 
+    #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
+    private Collection $comments;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -115,6 +118,7 @@ class Figure
         $this->datetime_add = new \DateTime();
         $this->image = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getSlug(): ?string
@@ -183,6 +187,36 @@ class Figure
             // set the owning side to null (unless already changed)
             if ($video->getFigure() === $this) {
                 $video->setFigure(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setFigure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getFigure() === $this) {
+                $comment->setFigure(null);
             }
         }
 
