@@ -41,7 +41,13 @@ class FigureController extends AbstractController
                     $entityManager->persist($comment);
                     $entityManager->flush();
 
+                    $this->addFlash(
+                        'notice',
+                        'Commentaire envoyé'
+                    );
+                    
                     return $this->redirectToRoute('detail_figure', array('slug' => $figure->getSlug()));
+                    
         }
 
         $getComment = $entityManager->getRepository(Comment::class)->findBy(['figure' => $figure->getId()]);
