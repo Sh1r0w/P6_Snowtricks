@@ -32,11 +32,10 @@ class HomeController extends AbstractController
 
     #[Route('/addFigure', name: 'add_figure')]
     public function add(
-        EntityManagerInterface $entityManager, 
+        EntityManagerInterface $entityManager,
         Request $request,
         ImgService $imgService,
-        ): Response
-    {
+    ): Response {
 
         $figure = new Figure();
 
@@ -47,10 +46,10 @@ class HomeController extends AbstractController
         if ($figureForm->isSubmitted() && $figureForm->isValid()) {
             $slugger = new AsciiSlugger();
             $slug = $slugger->slug($figure->getTitle());
-            
+
             $images = $figureForm->get('image')->getData();
 
-            foreach($images as $image){
+            foreach ($images as $image) {
                 $folder = $figure->getTitle();
 
                 $fichier = $imgService->addImg($image, $folder, 300, 300);
@@ -58,7 +57,7 @@ class HomeController extends AbstractController
                 $img = new Image();
                 $img->setName($fichier);
                 $figure->addImage($img);
-                
+
             }
 
 
@@ -68,15 +67,16 @@ class HomeController extends AbstractController
             $figure->setTitle($figure->getTitle())
                 ->setDescription($figure->getDescription())
                 ->setConnect($connect)
+                ->setDateTimeAdd(new \DateTime())
                 /*->setVideo($figure->getVideos())*/
                 ->setSlug($slug);
-        $entityManager->persist($figure);
-        $entityManager->flush();
+            $entityManager->persist($figure);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('forms/addFigure.html.twig',[
+        return $this->render('forms/addFigure.html.twig', [
             'figureForm' => $figureForm->createView()
         ]);
     }

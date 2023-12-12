@@ -14,6 +14,8 @@ use App\Entity\Connect;
 use App\Entity\Comment;
 use App\Services\ImgService;
 use App\Form\CommentType;
+use App\Controller\HomeController;
+use App\Form\UpdateFigureType;
 
 class FigureController extends AbstractController
 {
@@ -27,27 +29,28 @@ class FigureController extends AbstractController
 
         $commentForm->handleRequest($request);
 
-        $user = $this->getUser()->getId();
 
-        if ($commentForm->isSubmitted() && $commentForm->isValid()){
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $user = $this->getUser()->getId();
             $connect = $entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
             $figure = $entityManager->getRepository(Figure::class)->findOneBy(['slug' => $figure->getSlug()]);
             $figureId = $figure->getId();
 
             $comment->setComment($comment->getComment())
-                    ->setConnect($connect)
-                    ->setFigure($figure);
+                ->setConnect($connect)
+                ->setFigure($figure);
 
-                    $entityManager->persist($comment);
-                    $entityManager->flush();
+            $entityManager->persist($comment);
+            $entityManager->flush();
 
-                    $this->addFlash(
-                        'notice',
-                        'Commentaire envoyé'
-                    );
-                    
-                    return $this->redirectToRoute('detail_figure', array('slug' => $figure->getSlug()));
-                    
+            $this->addFlash(
+                'notice',
+                'Commentaire envoyé'
+            );
+
+            return $this->redirectToRoute('detail_figure', array('slug' => $figure->getSlug()));
+
         }
 
         $getComment = $entityManager->getRepository(Comment::class)->findBy(['figure' => $figure->getId()]);
@@ -60,21 +63,84 @@ class FigureController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete_figure')]
-    public function delete(EntityManagerInterface $entityManager, int $id, ImgService $img): Response
-    {
+    public function delete(
+        EntityManagerInterface $entityManager,
+        int $id,
+        ImgService $img
+    ): Response {
         $figure = $entityManager->getRepository(Figure::class)->find($id);
 
-        if (!$figure){
-            $this->createNotFoundException(
-                'Pas de figure avec l\' '.$id
-            );
-        }
+        self::unknow($figure, $id);
 
-        $img->delete($figure->getImage()[0]->getName());
+        if ($figure->getImage()[0]) {
+            $img->delete($figure->getImage()[0]->getName());
+        }
 
         $entityManager->remove($figure);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/update/{id}', name: 'update_figure')]
+    public function update(
+        EntityManagerInterface $entityManager,
+        int $id,
+        Request $request,
+        ImgService $img,
+        HomeController $add,
+        UpdateFigureType $updateForm,
+    ): Response {
+
+        $figure = new Figure();
+
+        $figureForm = $entityManager->getRepository(Figure::class)->find($id);
+
+        $updateForm = $this->createForm(UpdateFigureType::class, $figure);
+        $updateForm->handleRequest($request);
+
+        self::unknow($figureForm, $id);
+
+        if ($updateForm->isSubmitted() && $updateForm->isValid()) {
+            $slugger = new AsciiSlugger();
+            $slug = $slugger->slug($figure->getTitle());
+
+            $images = $updateForm->get('image')->getData();
+
+            foreach ($images as $image) {
+                $folder = $figure->getTitle();
+
+                $fichier = $img->addImg($image, $folder, 300, 300);
+
+                $img = new Image();
+                $img->setName($fichier);
+                $figure->addImage($img);
+            }
+
+
+            $figure->setTitle($figure->getTitle())
+                ->setDescription($figure->getDescription())
+                ->setDateUpdate(new \DateTime())
+                /*->setVideo($figure->getVideos())*/
+                ->setSlug($slug);
+            $entityManager->flush();
+        }
+
+            return $this->render('figure/update.html.twig', [
+                'figure' => $figureForm,
+                'updateForm' => $updateForm,
+            ]);
+        }
+    
+
+    public function unknow(
+        $figure,
+        $id
+    ): void {
+        if (!$figure) {
+            $this->createNotFoundException(
+                'Pas de figure avec l\' ' . $id
+            );
+        }
     }
 }
