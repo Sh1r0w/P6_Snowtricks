@@ -47,6 +47,9 @@ class Figure
     #[ORM\OneToMany(mappedBy: 'figure', targetEntity: Comment::class, cascade: ['persist', 'remove'])]
     private Collection $comments;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date_update = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -115,7 +118,7 @@ class Figure
 
     public function __construct()
     {
-        $this->datetime_add = new \DateTime();
+
         $this->image = new ArrayCollection();
         $this->videos = new ArrayCollection();
         $this->comments = new ArrayCollection();
@@ -219,6 +222,18 @@ class Figure
                 $comment->setFigure(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateUpdate(): ?\DateTimeInterface
+    {
+        return $this->date_update;
+    }
+
+    public function setDateUpdate(\DateTimeInterface $date_update): static
+    {
+        $this->date_update = $date_update;
 
         return $this;
     }
