@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,7 +34,6 @@ class FigureController extends AbstractController
             $user = $this->getUser()->getId();
             $connect = $entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
             $figure = $entityManager->getRepository(Figure::class)->findOneBy(['slug' => $figure->getSlug()]);
-            $figureId = $figure->getId();
 
             $comment->setComment($comment->getComment())
                 ->setConnect($connect)
@@ -82,24 +80,21 @@ class FigureController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
-    #[Route('/update/{id}', name: 'update_figure')]
+    #[Route('/update/{figure}', name: 'update_figure')]
     public function update(
         EntityManagerInterface $entityManager,
-        int $id,
+        Figure $figure,
         Request $request,
         ImgService $img,
         HomeController $add,
         UpdateFigureType $updateForm,
     ): Response {
-
-        $figure = new Figure();
-
-        $figureForm = $entityManager->getRepository(Figure::class)->find($id);
+              
 
         $updateForm = $this->createForm(UpdateFigureType::class, $figure);
         $updateForm->handleRequest($request);
 
-        self::unknow($figureForm, $id);
+        //self::unknow($figure);
 
         if ($updateForm->isSubmitted() && $updateForm->isValid()) {
             $slugger = new AsciiSlugger();
@@ -123,11 +118,13 @@ class FigureController extends AbstractController
                 ->setDateUpdate(new \DateTime())
                 /*->setVideo($figure->getVideos())*/
                 ->setSlug($slug);
-            $entityManager->flush();
+                $entityManager->persist($figure);
+                $entityManager->flush();
+                
         }
 
             return $this->render('figure/update.html.twig', [
-                'figure' => $figureForm,
+                'figure' => $figure,
                 'updateForm' => $updateForm,
             ]);
         }
