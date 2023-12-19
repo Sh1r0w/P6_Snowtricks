@@ -63,15 +63,14 @@ class FigureController extends AbstractController
     #[Route('/delete/{id}', name: 'delete_figure')]
     public function delete(
         EntityManagerInterface $entityManager,
-        int $id,
+        figure $figure,
         ImgService $img
     ): Response {
-        $figure = $entityManager->getRepository(Figure::class)->find($id);
 
-        self::unknow($figure, $id);
+        self::unknow($figure);
 
         if ($figure->getImage()[0]) {
-            $img->delete($figure->getImage()[0]->getName());
+            $img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
         }
 
         $entityManager->remove($figure);
@@ -131,12 +130,11 @@ class FigureController extends AbstractController
     
 
     public function unknow(
-        $figure,
-        $id
+        $figure
     ): void {
         if (!$figure) {
             $this->createNotFoundException(
-                'Pas de figure avec l\' ' . $id
+                'Pas de figure avec l\' ' . $figure->getId()
             );
         }
     }

@@ -90,21 +90,36 @@ class ImgService
             $success = false;
             $path = $this->params->get('images_directory') . $folder;
 
-            $mini = $path . 'mini/'  . $width . 'x' . $height . '-' . $fichier;
-
+            $mini = $path . '/mini/'  . $width . 'x' . $height . '-' . $fichier;
             if(file_exists($mini)){
-                rmdir($mini);
+                unlink($mini);
                 $success = true;
             }
 
-            $original = $path . $fichier;
+            $original = $path . '/' . $fichier;
             if(file_exists($original)){
-                rmdir($original);
+                unlink($original);
                 $success = true;
             }
 
-            return $success;
-        }
-        return false;
+            if (is_dir($path)) {
+
+                $files = glob($path . '/*');
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        unlink($file);
+                    }
+                }
+        
+
+                if (rmdir($path . '/mini/') && rmdir($path)) {
+                    $success = true;
+                    
+                } else {
+
+                    $success = false;
+                }
+            }
     }
+}
 }
