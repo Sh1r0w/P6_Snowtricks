@@ -105,13 +105,20 @@ class ImgService
             if (is_dir($path)) {
 
                 $files = glob($path . '/*');
+                $mini = glob($path . '/mini/*');
                 foreach ($files as $file) {
                     if (is_file($file)) {
                         unlink($file);
                     }
+
+                }
+
+                foreach ($mini as $file) {
+                    if (is_file($file)) {
+                    unlink($file);
+                    }
                 }
         
-
                 if (rmdir($path . '/mini/') && rmdir($path)) {
                     $success = true;
                     
