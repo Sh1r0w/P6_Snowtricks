@@ -1,9 +1,11 @@
-<?php 
+<?php
 
 namespace App\Services;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use App\Entity\Image;
 
 class ImgService
 {
@@ -15,21 +17,20 @@ class ImgService
     }
 
     public function addImg(
-        UploadedFile $picture, 
-        ?string $folder = '', 
-        ?int $width = 250, 
+        UploadedFile $picture,
+        ?string $folder = '',
+        ?int $width = 250,
         ?int $height = 250
-        )
-    {
+    ) {
         $fichier = md5(uniqid(rand(), true)) . '.webp';
 
         $pictureInfos = getimagesize($picture);
 
-        if($pictureInfos === false) {
+        if ($pictureInfos === false) {
             throw new Exception('Format incorrect');
         }
 
-        switch ($pictureInfos['mime']){
+        switch ($pictureInfos['mime']) {
             case 'image/png':
                 $pictureSource = imagecreatefrompng($picture);
                 break;
@@ -40,18 +41,18 @@ class ImgService
                 $pictureSource = imagecreatefromwebp($picture);
                 break;
             default:
-            throw new Exception('Format incorrect');
+                throw new Exception('Format incorrect');
         }
 
         $imageWidth = $pictureInfos[0];
         $imageHeight = $pictureInfos[1];
 
-        switch ($imageWidth <=> $imageHeight){
+        switch ($imageWidth <=> $imageHeight) {
             case -1:
                 $squareSize = $imageWidth;
                 $src_x = 0;
                 $src_y = ($imageHeight - $squareSize) / 2;
-                break;    
+                break;
             case 0:
                 $squareSize = $imageWidth;
                 $src_x = 0;
@@ -69,8 +70,8 @@ class ImgService
 
         $path = $this->params->get('images_directory') . $folder;
 
-        if(!file_exists($path . '/mini/')){
-            mkdir($path . '/mini/', 0755, true );
+        if (!file_exists($path . '/mini/')) {
+            mkdir($path . '/mini/', 0755, true);
         }
         imagewebp($resizeImg, $path . '/mini/' . $width . 'x' . $height . '-' . $fichier);
 
@@ -80,27 +81,29 @@ class ImgService
     }
 
     public function delete(
-        string $fichier, 
-        ?string $folder = '', 
-        ?int $width = 300, 
-    ?int $height = 300
-    )
-    {
-        if($fichier !== 'default.webp'){
+        string $fichier,
+        ?string $folder = '',
+        ?int $width = 300,
+        ?int $height = 300
+    ): void {
+        if ($fichier !== 'default.webp') {
             $success = false;
             $path = $this->params->get('images_directory') . $folder;
 
-            $mini = $path . '/mini/'  . $width . 'x' . $height . '-' . $fichier;
-            if(file_exists($mini)){
-                unlink($mini);
-                $success = true;
-            }
-
+            $mini = $path . '/mini/' . $width . 'x' . $height . '-' . $fichier;
             $original = $path . '/' . $fichier;
-            if(file_exists($original)){
+
+
+            if (file_exists($mini) && is_file($original)) {
+                unlink($mini);
                 unlink($original);
                 $success = true;
             }
+            
+            /*if (file_exists($original)) {
+                unlink($original);
+                $success = true;
+            }*/
 
             if (is_dir($path)) {
 
@@ -115,18 +118,34 @@ class ImgService
 
                 foreach ($mini as $file) {
                     if (is_file($file)) {
-                    unlink($file);
+                        unlink($file);
                     }
                 }
-        
+
                 if (rmdir($path . '/mini/') && rmdir($path)) {
                     $success = true;
-                    
+
                 } else {
 
                     $success = false;
                 }
             }
+        }
     }
-}
+
+    public function deleteOne(Image $image, $folder, ?int $width = 300,
+    ?int $height = 300): Response  {
+
+        $path = $this->params->get('images_directory') . $folder;
+        $mini = $path . '/mini/' . $width . 'x' . $height . '-' . $image->getName();
+        $original = $path . '/' . $image->getName();
+
+        if (file_exists($mini) && is_file($original)) {
+            unlink($mini);
+            unlink($original);
+            
+        }
+
+        return new Response('Image supprimée avec succès', Response::HTTP_OK);
+    }
 }
