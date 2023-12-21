@@ -1,60 +1,61 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}{{ figure.title }} - SnowTricks{% endblock %}
-
-{% block body %}
-<div class="container">
-    <div class="row">
-        <div class="card align-items-center">
-            <h1>{{ figure.title }}</h1>
-            {% if figure.image[0] is defined %}
-                <img class="card-img-top imgDetail" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
-                <div>
-                        <div id="carouselExample" class="carousel slide">
-                        <div class="carousel-inner">
-                                {% for image in figure.image %}
-                                    <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                    <img class="d-block w-100 m-4" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}">
-                                    </div>
-                                    {% endfor %}           
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                        </div>
-                </div>
-            {% endif %}       
-            <div class="card-body">
-                {{ figure.description }}
-            </div>
-            <div class="card-footer">
-                {{ figure.DatetimeAdd|date("H:m:s d/m/Y")}}
-        </div>
-        {% if app.user %}
-        {{ form_start(commentForm) }}
-        {{ form_row(commentForm.comment) }}
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-        {{ form_end(commentForm) }}
-        {% endif %}
-            {% for c in getComment %}
-                <div>
-                {{ c.comment }}
-                {{ c.date|date("H:m:s d/m/Y") }}
-                <hr>
-                </div>
-            {% endfor %}
-        
-    </div>
-</div>
-
-
-    
-
-
-
+{% block title %}
+    {{ figure.title }}
+    - SnowTricks
 {% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="card align-items-center">
+                <h1>
+                    {{ figure.title }}
+                </h1>
+                {% if figure.image[0] is defined %}
+                    <img class="card-img-top imgDetail" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
+                        <div class="w-25">
+                            <div id="carouselExample" class="carousel slide">
+                                <div class="carousel-inner">
+                                    {% for image in figure.image %}
+                                        <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
+                                            <img class="d-block w-100 m-4" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}"></div>
+                                        {% endfor %}
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">
+                                            Previous
+                                        </span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">
+                                            Next
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="card-body">
+                            {{ figure.description }}
+                        </div>
+                        <div class="card-footer">
+                            {{ figure.DatetimeAdd|date("H:m:s d/m/Y") }}
+                        </div>
+                        {% if app.user %}
+                            {{ form_start(commentForm) }}
+                            {{ form_row(commentForm.comment) }}
+                            <button type="submit" class="btn btn-primary">
+                                Envoyer
+                            </button>
+                            {{ form_end(commentForm) }}
+                        {% endif %}
+                        {% for c in getComment %}
+                            <div>
+                                {{ c.comment }}
+                                {{ c.date|date("H:m:s d/m/Y") }}
+                                <hr></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endblock %}
+                

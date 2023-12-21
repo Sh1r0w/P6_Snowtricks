@@ -19,8 +19,13 @@ use App\Form\UpdateFigureType;
 
 class FigureController extends AbstractController
 {
+    public function __construct(
+        private EntityManagerInterface $entityManager){
+            
+    }
+
     #[Route('/figure/{slug}', name: 'detail_figure')]
-    public function index(Figure $figure, EntityManagerInterface $entityManager, Request $request): Response
+    public function index(Figure $figure, Request $request): Response
     {
 
         $comment = new Comment();
@@ -33,15 +38,15 @@ class FigureController extends AbstractController
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $user = $this->getUser()->getId();
-            $connect = $entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
-            $figure = $entityManager->getRepository(Figure::class)->findOneBy(['slug' => $figure->getSlug()]);
+            $connect = $this->entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
+            $figure = $this->entityManager->getRepository(Figure::class)->findOneBy(['slug' => $figure->getSlug()]);
 
             $comment->setComment($comment->getComment())
                 ->setConnect($connect)
                 ->setFigure($figure);
 
-            $entityManager->persist($comment);
-            $entityManager->flush();
+            $this->entityManager->persist($comment);
+            $this->entityManager->flush();
 
             $this->addFlash(
                 'success',
@@ -52,7 +57,7 @@ class FigureController extends AbstractController
 
         }
 
-        $getComment = $entityManager->getRepository(Comment::class)->findBy(['figure' => $figure->getId()]);
+        $getComment = $this->entityManager->getRepository(Comment::class)->findBy(['figure' => $figure->getId()]);
 
         return $this->render('figure/index.html.twig', [
             'commentForm' => $commentForm->createView(),
@@ -63,7 +68,6 @@ class FigureController extends AbstractController
 
     #[Route('/delete/{id}', name: 'delete_figure')]
     public function delete(
-        EntityManagerInterface $entityManager,
         Figure $figure,
         ImgService $img
     ): Response {
@@ -74,8 +78,8 @@ class FigureController extends AbstractController
             $img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
         }
 
-        $entityManager->remove($figure);
-        $entityManager->flush();
+        $this->entityManager->remove($figure);
+        $this->entityManager->flush();
 
         $this->addFlash('success', 'Tricks supprimée avec succès');
 
@@ -84,7 +88,6 @@ class FigureController extends AbstractController
 
     #[Route('/update/{figure}', name: 'update_figure')]
     public function update(
-        EntityManagerInterface $entityManager,
         Figure $figure,
         Request $request,
         ImgService $img,
@@ -109,9 +112,9 @@ class FigureController extends AbstractController
 
                 $fichier = $img->addImg($image, $folder, 300, 300);
 
-                $img = new Image();
-                $img->setName($fichier);
-                $figure->addImage($img);
+                $picture = new Image();
+                $picture->setName($fichier);
+                $figure->addImage($picture);
             }
 
 
@@ -119,8 +122,8 @@ class FigureController extends AbstractController
                 ->setDescription($figure->getDescription())
                 ->setDateUpdate(new \DateTime())
                 ->setSlug($slug);
-            $entityManager->persist($figure);
-            $entityManager->flush();
+            $this->entityManager->persist($figure);
+            $this->entityManager->flush();
 
         }
 
@@ -135,12 +138,10 @@ class FigureController extends AbstractController
         ImgService $img,
         Image $image,
         Figure $figure,
-        EntityManagerInterface $entityManager,
     ): Response {
-
-        
-        $entityManager->remove($image);
-        $entityManager->flush();
+      
+        $this->entityManager->remove($image);
+        $this->entityManager->flush();
         
         $success = $img->deleteOne($image, $figure->getTitle());
 
