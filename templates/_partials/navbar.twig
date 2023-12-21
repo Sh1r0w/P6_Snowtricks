@@ -2,12 +2,18 @@
   <div class="container-fluid">
     <a class="navbar-brand d-none d-lg-block" href="{{ path ('app_home') }}"><img class="navLogo" src=" {{ asset('assets/uploads/logo.png') }}" alt=""></a>
     <ul class="col-12 col-lg-auto navbar-nav ms-lg-auto mb-2 mb-lg-0">
-      {% for message in app.flashes('notice') %}
-        <div class="flash-notice alert alert-success alert-dismissible fade show" role="alert">
+      {% for message in app.flashes('success') %}
+        <div class="flash-success alert alert-success alert-dismissible fade show" role="alert">
           <strong>{{ message }}</strong> 
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
     {% endfor %}
+    {% for message in app.flashes('error') %}
+      <div class="flash-error alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong> 
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+  {% endfor %}
     </ul>
       <ul class="col-12 col-lg-auto navbar-nav ms-lg-auto mb-2 mb-lg-0 flex-row justify-content-around">
         <li class="nav-item">

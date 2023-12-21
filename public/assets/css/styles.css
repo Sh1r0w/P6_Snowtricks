@@ -28,3 +28,9 @@
   max-width: 650px;
   height: auto;
 }
+
+.updateImg {
+  max-width: 50%;
+  height: auto;
+  margin: 25px;
+}

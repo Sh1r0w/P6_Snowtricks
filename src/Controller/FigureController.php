@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use App\Entity\Image;
 use App\Entity\Figure;
 use App\Entity\Connect;
 use App\Entity\Comment;
@@ -43,7 +44,7 @@ class FigureController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash(
-                'notice',
+                'success',
                 'Commentaire envoyé'
             );
 
@@ -63,19 +64,20 @@ class FigureController extends AbstractController
     #[Route('/delete/{id}', name: 'delete_figure')]
     public function delete(
         EntityManagerInterface $entityManager,
-        int $id,
+        Figure $figure,
         ImgService $img
     ): Response {
-        $figure = $entityManager->getRepository(Figure::class)->find($id);
 
-        self::unknow($figure, $id);
+        //self::unknow($figure);
 
         if ($figure->getImage()[0]) {
-            $img->delete($figure->getImage()[0]->getName());
+            $img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
         }
 
         $entityManager->remove($figure);
         $entityManager->flush();
+
+        $this->addFlash('success', 'Tricks supprimée avec succès');
 
         return $this->redirectToRoute('app_home');
     }
@@ -89,7 +91,7 @@ class FigureController extends AbstractController
         HomeController $add,
         UpdateFigureType $updateForm,
     ): Response {
-              
+
 
         $updateForm = $this->createForm(UpdateFigureType::class, $figure);
         $updateForm->handleRequest($request);
@@ -116,27 +118,48 @@ class FigureController extends AbstractController
             $figure->setTitle($figure->getTitle())
                 ->setDescription($figure->getDescription())
                 ->setDateUpdate(new \DateTime())
-                /*->setVideo($figure->getVideos())*/
                 ->setSlug($slug);
-                $entityManager->persist($figure);
-                $entityManager->flush();
-                
+            $entityManager->persist($figure);
+            $entityManager->flush();
+
         }
 
-            return $this->render('figure/update.html.twig', [
-                'figure' => $figure,
-                'updateForm' => $updateForm,
-            ]);
+        return $this->render('figure/update.html.twig', [
+            'figure' => $figure,
+            'updateForm' => $updateForm,
+        ]);
+    }
+
+    #[Route(path: 'deleteImg/{figure}/{id}', name: 'delete_img')]
+    public function deleteImg(
+        ImgService $img,
+        Image $image,
+        Figure $figure,
+        EntityManagerInterface $entityManager,
+    ): Response {
+
+        
+        $entityManager->remove($image);
+        $entityManager->flush();
+        
+        $success = $img->deleteOne($image, $figure->getTitle());
+
+        if ($success) {
+            $this->addFlash('success', 'Image Supprimée avec succès');
+        } else {
+            $this->addFlash('error', 'Echec de la suppresion');
         }
-    
+
+        return $this->redirectToRoute('update_figure', [ 'figure' => $figure->getId() ]);
+
+    }
 
     public function unknow(
-        $figure,
-        $id
+        $figure
     ): void {
         if (!$figure) {
             $this->createNotFoundException(
-                'Pas de figure avec l\' ' . $id
+                'Pas de figure avec l\' ' . $figure->getId()
             );
         }
     }

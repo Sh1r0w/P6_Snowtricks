@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FigureController!{% endblock %}
+{% block title %}{{ figure.title }} - SnowTricks{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -9,6 +9,25 @@
             <h1>{{ figure.title }}</h1>
             {% if figure.image[0] is defined %}
                 <img class="card-img-top imgDetail" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
+                <div>
+                        <div id="carouselExample" class="carousel slide">
+                        <div class="carousel-inner">
+                                {% for image in figure.image %}
+                                    <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
+                                    <img class="d-block w-100 m-4" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}">
+                                    </div>
+                                    {% endfor %}           
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                        </div>
+                </div>
             {% endif %}       
             <div class="card-body">
                 {{ figure.description }}
