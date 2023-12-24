@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Entity\Figure;
 use App\Entity\Connect;
-use App\Entity\Categories;
+use App\Entity\Video;
 use App\Entity\Image;
 use App\Form\FigureFormType;
 use App\Services\ImgService;
@@ -48,6 +48,7 @@ class HomeController extends AbstractController
             $slug = $slugger->slug($figure->getTitle());
 
             $images = $figureForm->get('image')->getData();
+            $videos = $figureForm->get('videos')->getData();
 
             foreach ($images as $image) {
                 $folder = $figure->getTitle();
@@ -59,8 +60,13 @@ class HomeController extends AbstractController
                 $figure->addImage($img);
 
             }
-
-
+            if($videos){
+                $video = new Video();
+                $video->setName($videos);
+                $figure->addVideo($video);
+            }
+            
+            
             $user = $this->getUser()->getId();
 
             $connect = $entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
@@ -68,7 +74,6 @@ class HomeController extends AbstractController
                 ->setDescription($figure->getDescription())
                 ->setConnect($connect)
                 ->setDateTimeAdd(new \DateTime())
-                /*->setVideo($figure->getVideos())*/
                 ->setSlug($slug);
             $entityManager->persist($figure);
             $entityManager->flush();

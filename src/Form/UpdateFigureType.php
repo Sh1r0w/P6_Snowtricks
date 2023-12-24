@@ -7,6 +7,7 @@ use App\Entity\Figure;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,9 +31,8 @@ class UpdateFigureType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 ])
-                ->add('videos', FileType::class, [
+                ->add('videos', TextType::class, [
                     'label' => 'video',
-                    'multiple' => true,
                     'mapped' => false,
                     'required' => false,
                     ])
