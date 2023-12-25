@@ -123,9 +123,18 @@ class FigureController extends AbstractController
                 }
 
                 if($videos){
+                    $control = explode("/", $videos);
+                    if($control[3] != 'embed')
+                    {
+                        $addEmbed = str_replace($control[2], $control[2] . '/embed', $videos);
+                        $video = new Video();
+                        $video->setName($addEmbed);
+                        $figure->addVideo($video);
+                    }else{
                     $video = new Video();
                     $video->setName($videos);
                     $figure->addVideo($video);
+                    }
                 }
 
 
@@ -179,7 +188,7 @@ class FigureController extends AbstractController
     $this->entityManager->flush();
     
    $this->addFlash('success','Video supprimée avec succès');
-   
+
    return $this->redirectToRoute('update_figure', ['figure' => $figure->getId()]);
 }
 
