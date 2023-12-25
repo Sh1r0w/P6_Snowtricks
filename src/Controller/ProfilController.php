@@ -22,6 +22,8 @@ class ProfilController extends AbstractController
         ManagerRegistry $doctrine,
     ): Response {
 
+
+        if (!is_null($this->getUser())){
         $id = $this->getUser()->getId();
         $user = $doctrine->getRepository(Connect::class)->find($id);
         $profilForm = $this->createForm(profilType::class, $user);
@@ -40,6 +42,10 @@ class ProfilController extends AbstractController
         return $this->render('profil/index.html.twig', [
             'profilForm' => $profilForm->createView(),
         ]);
+     }else{
+        $this->addFlash('error', 'Veuillez vous connecter');
+        return $this->redirectToRoute('app_home');
+     }
     }
 
 }

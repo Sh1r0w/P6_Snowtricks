@@ -20,8 +20,9 @@ use App\Form\UpdateFigureType;
 class FigureController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager){
-            
+        private EntityManagerInterface $entityManager)
+    {
+
     }
 
     #[Route('/figure/{slug}', name: 'detail_figure')]
@@ -73,16 +74,20 @@ class FigureController extends AbstractController
     ): Response {
 
         //self::unknow($figure);
+        if (!is_null($this->getUser())) {
+            if ($figure->getImage()[0]) {
+                $img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
+            }
 
-        if ($figure->getImage()[0]) {
-            $img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
+            $this->entityManager->remove($figure);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'Tricks supprimée avec succès');
+
+
+        } else {
+            $this->addFlash('error', ('Veuillez vous connecter'));
         }
-
-        $this->entityManager->remove($figure);
-        $this->entityManager->flush();
-
-        $this->addFlash('success', 'Tricks supprimée avec succès');
-
         return $this->redirectToRoute('app_home');
     }
 
@@ -95,36 +100,39 @@ class FigureController extends AbstractController
         UpdateFigureType $updateForm,
     ): Response {
 
+        if (!is_null($this->getUser())) {
+            $updateForm = $this->createForm(UpdateFigureType::class, $figure);
+            $updateForm->handleRequest($request);
 
-        $updateForm = $this->createForm(UpdateFigureType::class, $figure);
-        $updateForm->handleRequest($request);
 
-        //self::unknow($figure);
+            if ($updateForm->isSubmitted() && $updateForm->isValid()) {
+                $slugger = new AsciiSlugger();
+                $slug = $slugger->slug($figure->getTitle());
 
-        if ($updateForm->isSubmitted() && $updateForm->isValid()) {
-            $slugger = new AsciiSlugger();
-            $slug = $slugger->slug($figure->getTitle());
+                $images = $updateForm->get('image')->getData();
 
-            $images = $updateForm->get('image')->getData();
+                foreach ($images as $image) {
+                    $folder = $figure->getTitle();
 
-            foreach ($images as $image) {
-                $folder = $figure->getTitle();
+                    $fichier = $img->addImg($image, $folder, 300, 300);
+                    $picture = new Image();
+                    $picture->setName($fichier);
+                    $figure->addImage($picture);
+                }
 
-                $fichier = $img->addImg($image, $folder, 300, 300);
 
-                $picture = new Image();
-                $picture->setName($fichier);
-                $figure->addImage($picture);
+                $figure->setTitle($figure->getTitle())
+                    ->setDescription($figure->getDescription())
+                    ->setDateUpdate(new \DateTime())
+                    ->setSlug($slug);
+                $this->entityManager->persist($figure);
+                $this->entityManager->flush();
+
             }
+        } else {
 
-
-            $figure->setTitle($figure->getTitle())
-                ->setDescription($figure->getDescription())
-                ->setDateUpdate(new \DateTime())
-                ->setSlug($slug);
-            $this->entityManager->persist($figure);
-            $this->entityManager->flush();
-
+            $this->addFlash('error', 'Veuillez vous connecter');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('figure/update.html.twig', [
@@ -139,10 +147,10 @@ class FigureController extends AbstractController
         Image $image,
         Figure $figure,
     ): Response {
-      
+
         $this->entityManager->remove($image);
         $this->entityManager->flush();
-        
+
         $success = $img->deleteOne($image, $figure->getTitle());
 
         if ($success) {
@@ -151,17 +159,8 @@ class FigureController extends AbstractController
             $this->addFlash('error', 'Echec de la suppresion');
         }
 
-        return $this->redirectToRoute('update_figure', [ 'figure' => $figure->getId() ]);
+        return $this->redirectToRoute('update_figure', ['figure' => $figure->getId()]);
 
     }
 
-    public function unknow(
-        $figure
-    ): void {
-        if (!$figure) {
-            $this->createNotFoundException(
-                'Pas de figure avec l\' ' . $figure->getId()
-            );
-        }
-    }
 }
