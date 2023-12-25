@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use App\Entity\Image;
+use App\Entity\Video;
 use App\Entity\Figure;
 use App\Entity\Connect;
 use App\Entity\Comment;
@@ -110,6 +111,7 @@ class FigureController extends AbstractController
                 $slug = $slugger->slug($figure->getTitle());
 
                 $images = $updateForm->get('image')->getData();
+                $videos = $updateForm->get('videos')->getData();
 
                 foreach ($images as $image) {
                     $folder = $figure->getTitle();
@@ -120,6 +122,12 @@ class FigureController extends AbstractController
                     $figure->addImage($picture);
                 }
 
+                if($videos){
+                    $video = new Video();
+                    $video->setName($videos);
+                    $figure->addVideo($video);
+                }
+
 
                 $figure->setTitle($figure->getTitle())
                     ->setDescription($figure->getDescription())
@@ -127,6 +135,7 @@ class FigureController extends AbstractController
                     ->setSlug($slug);
                 $this->entityManager->persist($figure);
                 $this->entityManager->flush();
+                
 
             }
         } else {
@@ -162,5 +171,16 @@ class FigureController extends AbstractController
         return $this->redirectToRoute('update_figure', ['figure' => $figure->getId()]);
 
     }
+    
+    #[route(path:'deleteVideo/{figure}/{id}', name: 'delete_video')]
+    public function deleteVideo(Figure $figure, Video $video): Response
+{
+    $this->entityManager->remove($video);
+    $this->entityManager->flush();
+    
+   $this->addFlash('success','Video supprimée avec succès');
+   
+   return $this->redirectToRoute('update_figure', ['figure' => $figure->getId()]);
+}
 
 }

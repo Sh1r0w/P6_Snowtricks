@@ -26,5 +26,15 @@
     {% endfor %}
     {% endif %}
     </div>
+    <div class="row flex-column">
+        {% if figure.videos is defined %}
+            {% for v in figure.videos%}
+                <iframe src="{{ v.name }}" frameborder="0"></iframe>
+                <a class="text-decoration-none" href="{{ path('delete_video', {figure: figure.id, id: v.id} ) }}">
+            <button type="submit"> Supprimer </button>
+            </a>
+            {% endfor %}
+        {% endif %}
+    </div>
     </div>
 {% endblock %}

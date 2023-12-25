@@ -17,7 +17,7 @@
                 {% if figure.image[0] is defined %}
                     <img class="card-img-top imgDetail" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
                     <div class="d-flex ">
-                        <div class="w-25 flex-nowrap">
+                        <div class="w-100">
                             <div id="carouselExample" class="carousel slide">
                                 <div class="carousel-inner">
                                     {% for image in figure.image %}
@@ -45,12 +45,12 @@
                             </div>
                         {% endif %}
                         {% if figure.videos is defined %}
-                            
+                            <div class="w-100">
                                     <div id="carouselExample" class="carousel slide">
                                         <div class="carousel-inner">
                                             {% for video in figure.videos %}
                                                 <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                                    <iframe src="{{ video.name }}" frameborder="0"></iframe>
+                                                    <iframe class="w-100 m-4" src="{{ video.name }}" frameborder="0"></iframe>
                                                 </div>
                                             {% endfor %}
                                             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
@@ -71,10 +71,12 @@
                                             </button>
                                         </div>
                                     </div>
+                                    </div>
                                 {% endif %}
                             </div>
-                        
+                            <div>
                             {{ figure.description }}
+                            </div>
                         </div>
                         <div class="card-footer">
                             {{ figure.DatetimeAdd|date("H:m:s d/m/Y") }}
