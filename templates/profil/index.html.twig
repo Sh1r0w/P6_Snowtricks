@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre Profil{% endblock %}
+
+{% block body %}
+    {{ dump(app.user) }}
+<div class="container">
+    <h1>Bienvenue sur votre profil {{ app.user.username }}</h1>
+
+    {{ form_start(profilForm) }}
+    {{ form_row(profilForm.username)}}
+    {{ form_row(profilForm.email)}}
+    {{ form_row(profilForm.imguser)}}
+    <button type="submit" class="btn btn-primary"> Envoyer </button>
+    {{ form_end(profilForm) }}
+</div>
+{% endblock %}

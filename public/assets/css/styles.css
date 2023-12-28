@@ -34,3 +34,7 @@
   height: auto;
   margin: 25px;
 }
+
+iframe {
+  height: 300px;
+}
