@@ -5,9 +5,10 @@ namespace App\Services;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Image;
 
-class ImgService
+class ImgService extends AbstractController
 {
     private $params;
 
@@ -27,8 +28,11 @@ class ImgService
         $pictureInfos = getimagesize($picture);
 
         if ($pictureInfos === false) {
-            throw new Exception('Format incorrect');
-        }
+            $this->addFlash(
+               'error',
+               'Format incorrect'
+            );
+        }else{
 
         switch ($pictureInfos['mime']) {
             case 'image/png':
@@ -41,8 +45,12 @@ class ImgService
                 $pictureSource = imagecreatefromwebp($picture);
                 break;
             default:
-                throw new Exception('Format incorrect');
+            $this->addFlash(
+                'error',
+                'Format incorrect'
+             );
         }
+    }
 
         $imageWidth = $pictureInfos[0];
         $imageHeight = $pictureInfos[1];

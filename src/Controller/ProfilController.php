@@ -28,13 +28,16 @@ class ProfilController extends AbstractController
         $user = $doctrine->getRepository(Connect::class)->find($id);
         $profilForm = $this->createForm(profilType::class, $user);
         $profilForm->handleRequest($request);
+
         if ($profilForm->isSubmitted() && $profilForm->isValid()) {
+            if($user->getPassword() != $profilForm->getData()['password']){
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
-                    $profilForm->get('plainPassword')->getData()
+                    $profilForm->get('password')->getData()
                 )
-            );
+                );
+            }
             $entityManager->persist($user);
             $entityManager->flush();
         }
