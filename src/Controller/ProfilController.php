@@ -21,7 +21,8 @@ class ProfilController extends AbstractController
         private ImgService $img, 
         private ManagerRegistry $doctrine,
         private UserPasswordHasherInterface $userPasswordHasher,
-        private EntityManagerInterface $entityManager,){
+        private EntityManagerInterface $entityManager,
+        ){
 
     }
 
@@ -31,11 +32,15 @@ class ProfilController extends AbstractController
 
 
         if (!is_null($this->getUser())){
+
         $id = $this->getUser()->getId();
         $user = $this->doctrine->getRepository(Connect::class)->find($id);
+
         $profilForm = $this->createForm(profilType::class, $user);
         $passForm = $this->createForm(PassFormType::class, $user);
+
         $profilForm->handleRequest($request);
+        $passForm->handleRequest($request);
 
         $image = $profilForm->get('imguser')->getData();
         if ($profilForm->isSubmitted() && $profilForm->isValid()) {
@@ -43,12 +48,24 @@ class ProfilController extends AbstractController
                 $folder = $user->getUsername();
                 $recordImg = $this->img->addImg($image, $folder);
                 $user->setImguser($recordImg);
-            }
-
-
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+            };    
+            $this->addFlash('success', 'Profil Modifié');      
         }
+        
+        if($passForm->isSubmitted() && $passForm->isValid()){
+            $user->setPassword(
+                $this->userPasswordHasher->hashPassword(
+                    $user,
+                    $passForm->get('password')->getData()
+                )
+               
+            );
+
+            $this->addFlash('success','Mot de passe modifié');
+        }
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
         
         return $this->render('profil/index.html.twig', [
             'profilForm' => $profilForm->createView(),
@@ -58,6 +75,24 @@ class ProfilController extends AbstractController
         $this->addFlash('error', 'Veuillez vous connecter');
         return $this->redirectToRoute('app_home');
      }
+    }
+
+    #[Route(path: 'deleteImgProfil/{id}', name: 'delete_img')]
+    public function deleteImg(): Response {
+
+        $this->entityManager->remove($image);
+        $this->entityManager->flush();
+
+        $success = $this->img->deleteOne($image, $figure->getTitle());
+
+        if ($success) {
+            $this->addFlash('success', 'Image Supprimée avec succès');
+        } else {
+            $this->addFlash('error', 'Echec de la suppresion');
+        }
+
+        return $this->redirectToRoute('update_figure', ['figure' => $figure->getId()]);
+
     }
 
 }
