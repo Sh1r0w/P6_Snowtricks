@@ -92,9 +92,10 @@ class FigureController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
+    //#[Route('/update/{figure}', name: 'update_figure')]
     #[Route('/update/{figure}', name: 'update_figure')]
     public function update(
-        Figure $figure,
+        ?Figure $figure,
         Request $request,
         ImgService $img,
         HomeController $add,

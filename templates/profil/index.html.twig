@@ -3,16 +3,20 @@
 {% block title %}Votre Profil{% endblock %}
 
 {% block body %}
-    {{ dump(app.user) }}
+    
 <div class="container">
     <h1>Bienvenue sur votre profil {{ app.user.username }}</h1>
 
     {{ form_start(profilForm) }}
     {{ form_row(profilForm.username)}}
     {{ form_row(profilForm.email)}}
-    {{ form_row(profilForm.password)}}
     {{ form_row(profilForm.imguser)}}
-    <button type="submit" class="btn btn-primary"> Envoyer </button>
+    <button type="submit" class="btn btn-success"> Envoyer </button>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Changer votre mot de passe
+    </button>
     {{ form_end(profilForm) }}
+    {% include '_partials/modalProfil.html.twig' %}
 </div>
+{{ dump(app.user) }}
 {% endblock %}
