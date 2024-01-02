@@ -7,6 +7,17 @@
 <div class="container">
     <h1>Bienvenue sur votre profil {{ app.user.username }}</h1>
 
+    {% if app.user.imguser != null %}
+        <div class="container">
+        <img class="img-thumbnail" src="{{ asset('assets/uploads/') ~ app.user.username ~ ('/mini/250x250-') ~ app.user.imguser }}" alt="{{ app.user.username }}">
+        <a class="text-decoration-none" href="{{ path('delete_img_profil') }}">
+        <button type="submit"> Supprimer </button>
+        </a>
+        </div>
+    {% endif %}
+    
+    
+
     {{ form_start(profilForm) }}
     {{ form_row(profilForm.username)}}
     {{ form_row(profilForm.email)}}
@@ -18,5 +29,4 @@
     {{ form_end(profilForm) }}
     {% include '_partials/modalProfil.html.twig' %}
 </div>
-{{ dump(app.user) }}
 {% endblock %}

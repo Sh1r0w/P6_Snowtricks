@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use App\Entity\Image;
 use App\Entity\Video;
 use App\Entity\Figure;
@@ -21,13 +22,21 @@ use App\Form\UpdateFigureType;
 class FigureController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager)
+        private EntityManagerInterface $entityManager,
+        private ImgService $img,
+        private HomeController $add,
+        private UpdateFigureType $updateForm,
+        private ParameterBagInterface $params,
+        )
     {
-
+        $this->params = $params;
     }
 
     #[Route('/figure/{slug}', name: 'detail_figure')]
-    public function index(Figure $figure, Request $request): Response
+    public function index(
+        Request $request,
+        ?Figure $figure,
+        ): Response
     {
 
         $comment = new Comment();
@@ -69,15 +78,12 @@ class FigureController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete_figure')]
-    public function delete(
-        Figure $figure,
-        ImgService $img
-    ): Response {
+    public function delete( ?Figure $figure ): Response {
 
         //self::unknow($figure);
         if (!is_null($this->getUser())) {
             if ($figure->getImage()[0]) {
-                $img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
+                $this->img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
             }
 
             $this->entityManager->remove($figure);
@@ -95,17 +101,14 @@ class FigureController extends AbstractController
     //#[Route('/update/{figure}', name: 'update_figure')]
     #[Route('/update/{figure}', name: 'update_figure')]
     public function update(
-        ?Figure $figure,
         Request $request,
-        ImgService $img,
-        HomeController $add,
-        UpdateFigureType $updateForm,
+        ?Figure $figure
     ): Response {
 
         if (!is_null($this->getUser())) {
+            $oldFolder = $figure->getTitle();
             $updateForm = $this->createForm(UpdateFigureType::class, $figure);
             $updateForm->handleRequest($request);
-
 
             if ($updateForm->isSubmitted() && $updateForm->isValid()) {
                 $slugger = new AsciiSlugger();
@@ -113,11 +116,14 @@ class FigureController extends AbstractController
 
                 $images = $updateForm->get('image')->getData();
                 $videos = $updateForm->get('videos')->getData();
-
+                $folder = $figure->getTitle();
+                if($oldFolder != $updateForm->get('title')->getData()) {
+                    $path = $this->params->get('images_directory');
+                    rename($path . $oldFolder, $path . $updateForm->get('title')->getData());
+                }
                 foreach ($images as $image) {
-                    $folder = $figure->getTitle();
-
-                    $fichier = $img->addImg($image, $folder, 300, 300);
+                    
+                    $fichier = $this->img->addImg($image, $folder, 300, 300);
                     $picture = new Image();
                     $picture->setName($fichier);
                     $figure->addImage($picture);
@@ -162,15 +168,14 @@ class FigureController extends AbstractController
 
     #[Route(path: 'deleteImg/{figure}/{id}', name: 'delete_img')]
     public function deleteImg(
-        ImgService $img,
         Image $image,
-        Figure $figure,
-    ): Response {
+        ?Figure $figure
+        ): Response {
 
         $this->entityManager->remove($image);
         $this->entityManager->flush();
 
-        $success = $img->deleteOne($image, $figure->getTitle());
+        $success = $this->img->deleteOne($image, $figure->getTitle());
 
         if ($success) {
             $this->addFlash('success', 'Image Supprimée avec succès');

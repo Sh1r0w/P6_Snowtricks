@@ -7,12 +7,14 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Image;
+use App\Entity\Connect;
 
 class ImgService extends AbstractController
 {
-    private $params;
 
-    public function __construct(ParameterBagInterface $params)
+    public function __construct(
+        private ParameterBagInterface $params
+        )
     {
         $this->params = $params;
     }
@@ -107,11 +109,6 @@ class ImgService extends AbstractController
                 unlink($original);
                 $success = true;
             }
-            
-            /*if (file_exists($original)) {
-                unlink($original);
-                $success = true;
-            }*/
 
             if (is_dir($path)) {
 
@@ -141,7 +138,7 @@ class ImgService extends AbstractController
         }
     }
 
-    public function deleteOne(Image $image, $folder, ?int $width = 300,
+    public function deleteOne(Image $image,string $folder, ?int $width = 300,
     ?int $height = 300): Response  {
 
         $path = $this->params->get('images_directory') . $folder;
@@ -152,6 +149,21 @@ class ImgService extends AbstractController
             unlink($mini);
             unlink($original);
             
+        }
+
+        return new Response('Image supprimée avec succès', Response::HTTP_OK);
+    }
+
+    public function deleteProfil(Connect $connect, ?int $width = 250,
+    ?int $height = 250): Response {
+
+        $path = $this->params->get('images_directory') . $connect->getUsername();
+        $mini = $path . '/mini/' . $width . 'x' . $height . '-' . $connect->getImguser();
+        $original = $path . '/' . $connect->getImguser();
+
+        if (file_exists($mini) && is_file($original)) {
+            unlink($mini);
+            unlink($original);
         }
 
         return new Response('Image supprimée avec succès', Response::HTTP_OK);
