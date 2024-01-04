@@ -117,10 +117,11 @@ class FigureController extends AbstractController
                 $images = $updateForm->get('image')->getData();
                 $videos = $updateForm->get('videos')->getData();
                 $folder = $figure->getTitle();
+
                 if($oldFolder != $updateForm->get('title')->getData()) {
-                    $path = $this->params->get('images_directory');
-                    rename($path . $oldFolder, $path . $updateForm->get('title')->getData());
+                    $this->img->renameFolder($oldFolder, $updateForm->get('title')->getData());
                 }
+                
                 foreach ($images as $image) {
                     
                     $fichier = $this->img->addImg($image, $folder, 300, 300);

@@ -63,8 +63,7 @@ class ProfilController extends AbstractController
                 ;
 
                 if ($profilForm->get('username')->getData() != $folder) {
-                    $path = $this->params->get('images_directory');
-                    rename($path . $folder, $path . $profilForm->get('username')->getData());
+                    $this->img->renameFolder($folder, $profilForm->get('username')->getData());
                 }
                 $this->addFlash('success', 'Profil Modifié');
             }

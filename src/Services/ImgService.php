@@ -17,6 +17,7 @@ class ImgService extends AbstractController
         )
     {
         $this->params = $params;
+        $this->path = $this->params->get('images_directory');
     }
 
     public function addImg(
@@ -78,14 +79,14 @@ class ImgService extends AbstractController
         $resizeImg = imagecreatetruecolor($width, $height);
         imagecopyresampled($resizeImg, $pictureSource, 0, 0, $src_x, $src_y, $width, $height, $squareSize, $squareSize);
 
-        $path = $this->params->get('images_directory') . $folder;
+        
 
-        if (!file_exists($path . '/mini/')) {
-            mkdir($path . '/mini/', 0755, true);
+        if (!file_exists($this->path . $folder . '/mini/')) {
+            mkdir($this->path . $folder . '/mini/', 0755, true);
         }
-        imagewebp($resizeImg, $path . '/mini/' . $width . 'x' . $height . '-' . $fichier);
+        imagewebp($resizeImg, $this->path . $folder . '/mini/' . $width . 'x' . $height . '-' . $fichier);
 
-        $picture->move($path . '/', $fichier);
+        $picture->move($this->path . $folder . '/', $fichier);
 
         return $fichier;
     }
@@ -98,10 +99,9 @@ class ImgService extends AbstractController
     ): void {
         if ($fichier !== 'default.webp') {
             $success = false;
-            $path = $this->params->get('images_directory') . $folder;
 
-            $mini = $path . '/mini/' . $width . 'x' . $height . '-' . $fichier;
-            $original = $path . '/' . $fichier;
+            $mini = $this->path . $folder . '/mini/' . $width . 'x' . $height . '-' . $fichier;
+            $original = $this->path . $folder . '/' . $fichier;
 
 
             if (file_exists($mini) && is_file($original)) {
@@ -110,10 +110,10 @@ class ImgService extends AbstractController
                 $success = true;
             }
 
-            if (is_dir($path)) {
+            if (is_dir($this->path)) {
 
-                $files = glob($path . '/*');
-                $mini = glob($path . '/mini/*');
+                $files = glob($this->path . $folder . '/*');
+                $mini = glob($this->path . $folder . '/mini/*');
                 foreach ($files as $file) {
                     if (is_file($file)) {
                         unlink($file);
@@ -127,7 +127,7 @@ class ImgService extends AbstractController
                     }
                 }
 
-                if (rmdir($path . '/mini/') && rmdir($path)) {
+                if (rmdir($this->path . $folder . '/mini/') && rmdir($this->path . $folder)) {
                     $success = true;
 
                 } else {
@@ -141,9 +141,8 @@ class ImgService extends AbstractController
     public function deleteOne(Image $image,string $folder, ?int $width = 300,
     ?int $height = 300): Response  {
 
-        $path = $this->params->get('images_directory') . $folder;
-        $mini = $path . '/mini/' . $width . 'x' . $height . '-' . $image->getName();
-        $original = $path . '/' . $image->getName();
+        $mini = $this->path . $folder . '/mini/' . $width . 'x' . $height . '-' . $image->getName();
+        $original = $this->path . $folder . '/' . $image->getName();
 
         if (file_exists($mini) && is_file($original)) {
             unlink($mini);
@@ -157,9 +156,8 @@ class ImgService extends AbstractController
     public function deleteProfil(Connect $connect, ?int $width = 250,
     ?int $height = 250): Response {
 
-        $path = $this->params->get('images_directory') . $connect->getUsername();
-        $mini = $path . '/mini/' . $width . 'x' . $height . '-' . $connect->getImguser();
-        $original = $path . '/' . $connect->getImguser();
+        $mini = $this->path . $connect->getUsername() . '/mini/' . $width . 'x' . $height . '-' . $connect->getImguser();
+        $original = $this->path . $connect->getUsername() . '/' . $connect->getImguser();
 
         if (file_exists($mini) && is_file($original)) {
             unlink($mini);
@@ -167,5 +165,10 @@ class ImgService extends AbstractController
         }
 
         return new Response('Image supprimée avec succès', Response::HTTP_OK);
+    }
+
+
+    public function renameFolder($oldFolder, $newFolder){
+        rename($this->path . $oldFolder, $this->path . $newFolder);
     }
 }
