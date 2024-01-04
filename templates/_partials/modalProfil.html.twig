@@ -1,0 +1,21 @@
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Changer votre mot de passe</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       {{ form_start(passForm) }}
+       {{ form_row(passForm.password) }}
+       </div>
+      <div class="modal-footer">
+       <button type="submit" class="btn btn-success"> Envoyer </button>
+       <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annulé</button>
+       {{ form_end(passForm) }}
+      
+        
+      </div>
+    </div>
+  </div>
+</div>
