@@ -67,13 +67,11 @@ class ResetPasswordController extends AbstractController
             } else {
                 $this->addFlash('error','Utilisateur inconnue');
             }
-            return $this->render('reset_password/index.html.twig', [
-                'profil' => $passForm->createView(),
-                'user' => $user,
-            ]);
-        } else {
-            return $this->redirectToRoute('app_home');
+            
         }
+        return $this->render('reset_password/index.html.twig', [
+                'pass' => $passForm->createView(),
+            ]);
         
     }
 
@@ -103,7 +101,7 @@ class ResetPasswordController extends AbstractController
                     $this->addFlash('success', 'Mot de passe modifié');
                 }
 
-                return $this->render('reset_password/index.html.twig', [
+                return $this->render('reset_password/reset_password_step2.html.twig', [
                     'pass' => $passForm->createView(),
                 ]);
             } else {
