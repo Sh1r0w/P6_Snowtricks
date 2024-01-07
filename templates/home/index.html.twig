@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 {% block title %}
     SnowTricks
-            
+                
+        
     
 {% endblock %}
 {% block body %}
@@ -11,48 +12,51 @@
                 <form action="{{ path('add_figure') }}">
                     <h1>
                         Bienvenue sur le site communautaire SnowTricks
-                                        
+                                                                
+                                            
                     </h1>
-                {% if app.user %}
-                    <button class="btn btn-primary">
-                        Crée une tricks
-                    </button>
-                {% endif %}
+                    {% if app.user %}
+                        <button class="btn btn-primary">
+                            Crée une tricks
+                                                
+                        </button>
+                    {% endif %}
                 </form>
             </div>
-            
         </div>
         <div class="row m-0">
             <div class="col">
                 <div class="d-flex flex-wrap justify-content-center">
                     {% for f in figures %}
-                        
                         <div class="card col-lg-2 m-2">
                             <a class="nav-link" href="{{ path('app_home') ~ ('figure/') ~ f.slug }}">
-                            {% if f.image[0] is defined %}
-                            <img class="card-img-top" src="{{ asset('assets/uploads/') ~ f.title ~ ('/mini/300x300-') ~ f.image[0].name }}" alt="{{ f.title }}">
-                            {% endif %}
-                            </a>
-                                <div class="card-body position-relative">
-                                    {% if app.user %}
-                                    <div class="d-flex iconCard position-absolute z-2">
-                                        <a class="nav-link m-1" href="{{ path('update_figure', {figure: f.id}) }}"><i class="fa-solid fa-pencil"></i></a>
-                                        <a class="nav-link m-1" href="{{ path('delete_figure', {id: f.id})  }}" onclick="return confirm('Voulez vous vraiment supprimer {{f.title}} ?')"><i class="fa-regular fa-trash-can"></i></a>
+                                {% if f.image[0] is defined %}
+                                    <img class="card-img-top" src="{{ asset('assets/uploads/') ~ f.title ~ ('/mini/300x300-') ~ f.image[0].name }}" alt="{{ f.title }}">
+                                    {% endif %}
+                                    <div class="card-body position-relative">
+                                        {% if app.user %}
+                                            <div class="d-flex iconCard position-absolute z-2">
+                                                <a class="nav-link m-1" href="{{ path('update_figure', {figure: f.id}) }}">
+                                                    <i class="fa-solid fa-pencil"></i>
+                                                </a>
+                                                <a class="nav-link m-1" href="{{ path('delete_figure', {id: f.id}) }}" onclick="return confirm('Voulez vous vraiment supprimer {{ f.title }} ?')">
+                                                    <i class="fa-regular fa-trash-can"></i>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                        <a class="nav-link" href="{{ path('app_home') ~ ('figure/') ~ f.slug }}">
+                                            <h5 class="card-title">
+                                                {{ f.title }}
+                                            </h5>
+                                        </a>
+                                        <p class="card-text">
+                                            {{ f.description }}
+                                        </p>
                                     </div>
-                                     {% endif %}
-                                    <h5 class="card-title">
-                                        {{ f.title }}
-                                    </h5>
-                                    <p class="card-text">
-                                        {{ f.description }}
-                                    </p>
                                 </div>
-                                
-                            </div>
-                            
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endblock %}
-        
+            {% endblock %}
+            
