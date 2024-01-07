@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,7 @@ class FigureController extends AbstractController
     public function index(
         Request $request,
         ?Figure $figure,
+        ?CommentRepository $commentRepository,
         ): Response
     {
 
@@ -45,7 +47,7 @@ class FigureController extends AbstractController
 
         $commentForm->handleRequest($request);
 
-
+        $page = $request->query->getInt('page',1);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $user = $this->getUser()->getId();
@@ -68,7 +70,8 @@ class FigureController extends AbstractController
 
         }
 
-        $getComment = $this->entityManager->getRepository(Comment::class)->findBy(['figure' => $figure->getId()]);
+        $getComment =  $commentRepository->findCommentPaginated($page, $figure->getId(), 10);
+
 
         return $this->render('figure/index.html.twig', [
             'commentForm' => $commentForm->createView(),
