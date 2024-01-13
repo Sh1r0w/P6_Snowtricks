@@ -21,18 +21,39 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class RegistrationController extends AbstractController
 {
 
+   /**
+    * The function is a constructor that takes in four dependencies: EntityManagerInterface,
+    * JWTService, AppAuthenticator, and UserAuthenticatorInterface.
+    */
     public function __construct(
         private EntityManagerInterface $em, 
         private JWTService $jwt, 
         private AppAuthenticator $authenticator, 
         private UserAuthenticatorInterface $userAuthenticator, )
     {
-        //$this->em = $em;
-        //$this->jwt = $jwt;
-        //$this->authenticator = $authenticator;
-        //$this->userAuthenticator = $userAuthenticator;
     }
     
+   /**
+    * This PHP function handles user registration, including password hashing, persisting the user to
+    * the database, sending an activation email, and authenticating the user after registration.
+    * 
+    * @param Request request The `` parameter is an instance of the `Request` class, which
+    * represents an HTTP request. It contains information about the request, such as the request
+    * method, headers, and request data.
+    * @param UserPasswordHasherInterface userPasswordHasher The `UserPasswordHasherInterface` is used
+    * to hash the user's password before storing it in the database. It provides a method
+    * `hashPassword()` which takes the user object and the plain password as arguments and returns the
+    * hashed password.
+    * @param EntityManagerInterface entityManager The `entityManager` parameter is an instance of the
+    * `EntityManagerInterface` class, which is responsible for managing the persistence of objects to
+    * the database. It provides methods for persisting, updating, and deleting entities, as well as
+    * querying the database.
+    * @param MailService mail The `` parameter is an instance of the `MailService` class, which is
+    * responsible for sending emails. It is used to send an activation email to the user after they
+    * register.
+    * 
+    * @return Response a Response object.
+    */
     #[Route('/register', name: 'app_register')]
     public function register(
         Request $request, 
@@ -94,6 +115,26 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * The function verifies a user's email by checking the validity and expiration of a token,
+     * updating the user's verification status, and authenticating the user if successful.
+     * 
+     * @param token The `token` parameter is a string that represents the verification token for the
+     * user's email. This token is typically generated and sent to the user's email address when they
+     * sign up or request to verify their email.
+     * @param ConnectRepository connectRepository The `connectRepository` is an instance of a
+     * repository class that is responsible for retrieving and manipulating data related to the
+     * `Connect` entity. It is used to find a user based on the `user_id` extracted from the JWT token
+     * payload.
+     * @param Request request The `` parameter is an instance of the
+     * `Symfony\Component\HttpFoundation\Request` class. It represents an HTTP request made to the
+     * server and contains information such as the request method, headers, query parameters, and
+     * request body.
+     * 
+     * @return Response If the conditions in the if statement are met, the function will return the
+     * result of the `authenticateUser` method. Otherwise, it will return the result of the
+     * `redirectToRoute` method with the argument `'app_home'`.
+     */
     #[Route('/verify/{token}', name: 'verify_email')]
     public function verifyUserEmail(
         $token, 

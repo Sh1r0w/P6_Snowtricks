@@ -2,6 +2,7 @@
 {% block title %}
     {{ figure.title }}
     - SnowTricks
+            
         
     
 {% endblock %}
@@ -13,69 +14,74 @@
                     {{ figure.title }}
                 </h1>
                 <div class="card-body">
-                
-                {% if figure.image[0] is defined %}
-                    <img class="card-img-top imgDetail" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
-                    <div class="d-flex ">
-                        <div class="w-100">
-                            <div id="carouselExample" class="carousel slide">
-                                <div class="carousel-inner">
-                                    {% for image in figure.image %}
-                                        <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                            <img class="d-block w-100 m-4" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}"></div>
-                                        </div>
-                                    {% endfor %}
-                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">
-                                            Previous
-                                                                                                                                
-                                                                                    
-                                        </span>
-                                    </button>
-                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span class="visually-hidden">
-                                            Next
-                                                                                                                                
-                                                                                    
-                                        </span>
-                                    </button>
-                                </div>
-                            </div>
-                        {% endif %}
-                        {% if figure.videos is defined %}
-                            <div class="w-100">
-                                    <div id="carouselExample" class="carousel slide">
+                    {% if figure.image[0] is defined %}
+                        <img class="card-img-top imgDetail img-thumbnail mb-5" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
+                            <div class="d-flex flex-wrap flex-md-nowrap">
+                                <div class="w-100 m-2">
+                                    <div id="carouselImg" class="carousel slide">
                                         <div class="carousel-inner">
-                                            {% for video in figure.videos %}
+                                            {% for image in figure.image %}
                                                 <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                                    <iframe class="w-100 m-4" src="{{ video.name }}" frameborder="0"></iframe>
-                                                </div>
+                                                    <img class="w-100" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}">
+                                                    </div>
+                                                
                                             {% endfor %}
-                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselImg" data-bs-slide="prev">
                                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                 <span class="visually-hidden">
                                                     Previous
+                                                                                                                                                                                    
                                                                                                                                         
                                                                                             
                                                 </span>
                                             </button>
-                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                            <button class="carousel-control-next" type="button" data-bs-target="#carouselImg" data-bs-slide="next">
                                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                                 <span class="visually-hidden">
                                                     Next
+                                                                                                                                                                                    
                                                                                                                                         
                                                                                             
                                                 </span>
                                             </button>
+                                            </div>
                                         </div>
                                     </div>
+                                {% endif %}
+                                {% if figure.videos is defined %}
+                                    <div class="w-100">
+                                        <div id="carouselVideo" class="carousel slide">
+                                            <div class="carousel-inner">
+                                                {% for video in figure.videos %}
+                                                    <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
+                                                        <iframe class="w-100 offset-md-1 m-4" src="{{ video.name }}" frameborder="0"></iframe>
+                                                    </div>
+                                                {% endfor %}
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideo" data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">
+                                                        Previous
+                                                                                                                                                                                                
+                                                                                                                                                    
+                                                                                                        
+                                                    </span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#carouselVideo" data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                    <span class="visually-hidden">
+                                                        Next
+                                                                                                                                                                                                
+                                                                                                                                                    
+                                                                                                        
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 {% endif %}
                             </div>
                             <div>
-                            {{ figure.description }}
+                                {{ figure.description }}
                             </div>
                         </div>
                         <div class="card-footer">
@@ -86,59 +92,64 @@
                             {{ form_row(commentForm.comment) }}
                             <button type="submit" class="btn btn-primary">
                                 Envoyer
+                                                                                                                            
                                                                                             
                                                             
                             </button>
                             {{ form_end(commentForm) }}
                         {% endif %}
-                        {% for c in getComment.data %}
-                            <div>
-                                {{ c.comment }}
-                                {{ c.date|date("H:m:s d/m/Y") }}
+                        <div class="justify-content-center">
+                            {% for c in getComment.data %}
+                                <div>
+                                    {{ c.comment }}
+                                    {{ c.date|date("H:m:s d/m/Y") }}
+                                </div>
+                            {% endfor %}
                             <hr></div>
-                        
-
-                        {% endfor %}
-
-                        {% set path = 'detail_figure' %}
+                            {% set path = 'detail_figure' %}
                             {% set pages = getComment.pages %}
                             {% set currentPage = getComment.page %}
-                                        {% if pages > 1 %}
-                                            <nav>
-                                                <ul class="pagination">
-                                                    
-                                                        {% if currentPage > 1 %}
-                                                           <li class="page-item">
-                                                        <a href="{{ path(path, {slug: figure.slug, page: currentPage - 1}) }}" class="page-link">&lt;</a>
-                                                        </il>
-                                                         {% else %}
-                                                    <li class="page-item disabled">
-                                                        <a class="page-link">&lt;</a>
-                                                    </li>
-                                                {% endif %}
-                                        
-                                                    {% for page in 1..pages %}
-                                                        <li class="page-item {{ page == currentPage ? 'active' }}">
-                                                            <a href="{{ path(path, {slug: figure.slug, page: page}) }}" class="page-link">{{ page }}</a>
-                                                        </li>
-                                                    {% endfor %}
-                                                    
-                                                        {% if currentPage < pages %}
-                                                           <li class="page-item">
-                                                        <a href="{{ path(path, {slug: figure.slug, page: currentPage + 1}) }}" class="page-link">&gt;</a>
-                                                        </li>
-                                                         {% else %}
-                                                            <li class="page-item disabled">
-                                                        <a  class="page-link">&gt;</a>
-                                                        </li>
-                                                    {% endif %}
-                                                    
-                                                </ul>
-                                            </nav>
-                                            
+                            {% if pages > 1 %}
+                                <nav>
+                                    <ul class="pagination">
+                                        {% if currentPage > 1 %}
+                                            <li class="page-item">
+                                                <a href="{{ path(path, {slug: figure.slug, page: currentPage - 1}) }}" class="page-link">
+                                                    &lt;
+                                                </a>
+                                            </il>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link">
+                                                    &lt;
+                                                </a>
+                                            </li>
                                         {% endif %}
-            </div>
-            </div>
-            </div>
-                {% endblock %}
-                
+                                        {% for page in 1..pages %}
+                                            <li class="page-item {{ page == currentPage ? 'active' }}">
+                                                <a href="{{ path(path, {slug: figure.slug, page: page}) }}" class="page-link">
+                                                    {{ page }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                        {% if currentPage < pages %}
+                                            <li class="page-item">
+                                                <a href="{{ path(path, {slug: figure.slug, page: currentPage + 1}) }}" class="page-link">
+                                                    &gt;
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link">
+                                                    &gt;
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+            
