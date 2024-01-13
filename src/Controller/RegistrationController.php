@@ -137,7 +137,7 @@ class RegistrationController extends AbstractController
      */
     #[Route('/verify/{token}', name: 'verify_email')]
     public function verifyUserEmail(
-        $token, 
+        string $token, 
         ConnectRepository $connectRepository, 
         Request $request, 
         ): Response

@@ -62,9 +62,9 @@ class ProfilController extends AbstractController
             $passForm->handleRequest($request);
 
             if ($profilForm->isSubmitted() && $profilForm->isValid()) {
-                if ($profilForm->get('imguser')->getData() != false) {
+                if ($profilForm->get('imguser')->getData()) {
 
-                    if ($this->user->getImguser() != null) {
+                    if ($this->user->getImguser()) {
                         self::deleteImg();
                     }
 

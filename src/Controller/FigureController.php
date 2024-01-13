@@ -109,7 +109,6 @@ class FigureController extends AbstractController
     #[Route('/delete/{id}', name: 'delete_figure')]
     public function delete( ?Figure $figure ): Response {
 
-        //self::unknow($figure);
         if (!is_null($this->getUser())) {
             if ($figure->getImage()[0]) {
                 $this->img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
