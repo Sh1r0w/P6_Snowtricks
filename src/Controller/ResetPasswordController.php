@@ -42,7 +42,7 @@ class ResetPasswordController extends AbstractController
      * 
      * @return Response The code is returning a Response object.
      */
-    #[Route('/reset/password', name: 'app_reset_password')]
+    #[Route('/reset/password', methods: ['GET', 'POST'], name: 'app_reset_password')]
     public function index(
         Request $request,
     ): Response {
