@@ -103,9 +103,9 @@ class ResetPasswordController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('reset/{token}', name: 'app_reset_step_2')]
+    #[Route('reset/{token}', methods:['GEt', 'POST'] ,name: 'app_reset_step_2')]
     public function resetPassword2(
-        $token,
+        string $token,
         request $request
     ): Response {
         if ($token && !$this->jwt->isExpired($token)) {

@@ -45,7 +45,7 @@ class ProfilController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/profil', name: 'app_profil')]
+    #[Route('/profil', methods:['GET', 'POST'], name: 'app_profil')]
     public function index(Request $request): Response
     {
 
@@ -112,7 +112,7 @@ class ProfilController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route(path: 'deleteImgProfil', name: 'delete_img_profil')]
+    #[Route(path: 'deleteImgProfil', methods:['GET'],name: 'delete_img_profil')]
     public function deleteImg(): Response
     {
         if ($this->getUser()) {

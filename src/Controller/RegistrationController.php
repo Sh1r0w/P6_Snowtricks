@@ -135,7 +135,7 @@ class RegistrationController extends AbstractController
      * result of the `authenticateUser` method. Otherwise, it will return the result of the
      * `redirectToRoute` method with the argument `'app_home'`.
      */
-    #[Route('/verify/{token}', name: 'verify_email')]
+    #[Route('/verify/{token}', methods:['GET'], name: 'verify_email')]
     public function verifyUserEmail(
         string $token, 
         ConnectRepository $connectRepository, 

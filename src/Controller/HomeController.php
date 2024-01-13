@@ -28,7 +28,7 @@ class HomeController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/', name: 'app_home')]
+    #[Route('/', methods:['GET'], name: 'app_home')]
     public function index(ManagerRegistry $doctrine): Response
     {
 
@@ -56,7 +56,7 @@ class HomeController extends AbstractController
      * 
      * @return Response The code is returning a Response object.
      */
-    #[Route('/addFigure', name: 'add_figure')]
+    #[Route('/addFigure', methods: ['GET', 'POST'], name: 'add_figure')]
     public function add(
         EntityManagerInterface $entityManager,
         Request $request,

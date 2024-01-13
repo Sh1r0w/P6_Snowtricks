@@ -50,7 +50,7 @@ class FigureController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/figure/{slug}', name: 'detail_figure')]
+    #[Route('/figure/{slug}', methods: ['GET'], name: 'detail_figure')]
     public function index(
         Request $request,
         ?Figure $figure,
@@ -106,7 +106,7 @@ class FigureController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/delete/{id}', name: 'delete_figure')]
+    #[Route('/delete/{id}', methods: ['GEt'], name: 'delete_figure')]
     public function delete( ?Figure $figure ): Response {
 
         if (!is_null($this->getUser())) {
@@ -140,7 +140,7 @@ class FigureController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/update/{figure}', name: 'update_figure')]
+    #[Route('/update/{figure}', methods: ['GET', 'POST'] ,name: 'update_figure')]
     public function update(
         Request $request,
         ?Figure $figure
@@ -224,7 +224,7 @@ class FigureController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route(path: 'deleteImg/{figure}/{id}', name: 'delete_img')]
+    #[Route(path: 'deleteImg/{figure}/{id}', methods: ['GET'] , name: 'delete_img')]
     public function deleteImg(
         Image $image,
         ?Figure $figure
@@ -256,7 +256,7 @@ class FigureController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[route(path:'deleteVideo/{figure}/{id}', name: 'delete_video')]
+    #[route(path:'deleteVideo/{figure}/{id}', methods: ['GET'], name: 'delete_video')]
     public function deleteVideo(Figure $figure, Video $video): Response
 {
     $this->entityManager->remove($video);
