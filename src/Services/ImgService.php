@@ -44,7 +44,7 @@ class ImgService extends AbstractController
         ?string $folder = '',
         ?int $width = 250,
         ?int $height = 250
-    ) {
+    ): string {
         $fichier = md5(uniqid(rand(), true)) . '.webp';
 
         $pictureInfos = getimagesize($picture);
@@ -234,7 +234,7 @@ class ImgService extends AbstractController
      * @param oldFolder The name of the folder that you want to rename.
      * @param newFolder The new name for the folder that you want to rename.
      */
-    public function renameFolder($oldFolder, $newFolder){
+    public function renameFolder(string $oldFolder,string $newFolder): void{
         rename($this->path . $oldFolder, $this->path . $newFolder);
     }
 }
