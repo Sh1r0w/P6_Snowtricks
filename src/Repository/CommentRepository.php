@@ -49,6 +49,7 @@ class CommentRepository extends ServiceEntityRepository
         ->select('c')
         ->from('App\Entity\Comment', 'c')
         ->where("c.figure = '$id'")
+        ->orderBy('c.date', 'DESC')
         ->setMaxResults($limit)
         ->setFirstResult($page * $limit - $limit);
 
