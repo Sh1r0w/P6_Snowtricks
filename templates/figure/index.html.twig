@@ -99,16 +99,21 @@
                             {{ form_end(commentForm) }}
                         {% endif %}
                         <div class="justify-content-center">
+                            {% if getComment %}
+                                
+                            
                             {% for c in getComment.data %}
                                 <div>
                                     {{ c.comment }}
                                     {{ c.date|date("H:m:s d/m/Y") }}
                                 </div>
                             {% endfor %}
+                            
                             <hr></div>
                             {% set path = 'detail_figure' %}
                             {% set pages = getComment.pages %}
                             {% set currentPage = getComment.page %}
+                                
                             {% if pages > 1 %}
                                 <nav>
                                     <ul class="pagination">
@@ -148,6 +153,7 @@
                                     </ul>
                                 </nav>
                             {% endif %}
+                        {% endif %}
                         </div>
                     </div>
                 </div>

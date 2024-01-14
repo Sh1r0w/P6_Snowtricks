@@ -50,7 +50,7 @@ class FigureController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/figure/{slug}', methods: ['GET'], name: 'detail_figure')]
+    #[Route('/figure/{slug}', methods: ['GET', 'POST'], name: 'detail_figure')]
     public function index(
         Request $request,
         ?Figure $figure,
@@ -86,15 +86,21 @@ class FigureController extends AbstractController
             return $this->redirectToRoute('detail_figure', array('slug' => $figure->getSlug()));
 
         }
-
+        if($figure){
         $getComment =  $commentRepository->findCommentPaginated($page, $figure->getId(), 10);
-
 
         return $this->render('figure/index.html.twig', [
             'commentForm' => $commentForm->createView(),
             'figure' => $figure,
             'getComment' => $getComment,
         ]);
+        }else{
+            $this->addFlash(
+            'error',
+            'Tricks inconnue'
+            );
+            return $this->redirectToRoute('app_home');
+        }
     }
 
     /**
@@ -106,7 +112,7 @@ class FigureController extends AbstractController
      * 
      * @return Response a Response object.
      */
-    #[Route('/delete/{id}', methods: ['GEt'], name: 'delete_figure')]
+    #[Route('/delete/{id}', methods: ['GET'], name: 'delete_figure')]
     public function delete( ?Figure $figure ): Response {
 
         if (!is_null($this->getUser())) {

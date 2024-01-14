@@ -104,6 +104,11 @@ class HomeController extends AbstractController
             $entityManager->persist($figure);
             $entityManager->flush();
 
+            $this->addFlash(
+               'success',
+               'La tricks ' . $figure->getTitle() . ' a été créée avec succès'
+            );
+
             return $this->redirectToRoute('app_home');
         }
 
