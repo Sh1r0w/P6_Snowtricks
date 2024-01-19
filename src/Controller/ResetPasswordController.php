@@ -18,6 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ResetPasswordController extends AbstractController
 {
+    /**
+     * The function is a constructor that initializes several dependencies for a PHP class.
+     */
     public function __construct(
         private ManagerRegistry $doctrine,
         private JWTService $jwt,
@@ -28,7 +31,18 @@ class ResetPasswordController extends AbstractController
     ) {
     }
 
-    #[Route('/reset/password', name: 'app_reset_password')]
+    /**
+     * This PHP function handles the submission of a password reset form, generates a JWT token,
+     * updates the user's reset token in the database, sends a password reset email, and displays a
+     * success or error message.
+     * 
+     * @param Request request The `` parameter is an instance of the `Request` class, which
+     * represents an HTTP request. It contains information about the request, such as the request
+     * method, headers, query parameters, and request body.
+     * 
+     * @return Response The code is returning a Response object.
+     */
+    #[Route('/reset/password', methods: ['GET', 'POST'], name: 'app_reset_password')]
     public function index(
         Request $request,
     ): Response {
@@ -75,9 +89,23 @@ class ResetPasswordController extends AbstractController
         
     }
 
-    #[Route('reset/{token}', name: 'app_reset_step_2')]
+    /**
+     * The function `resetPassword2` is used to reset a user's password by validating a token, updating
+     * the password, and displaying a form for the user to enter their new password.
+     * 
+     * @param token The `token` parameter is a string that represents a unique token generated for a
+     * user who wants to reset their password. This token is typically sent to the user's email address
+     * and is used to verify the user's identity and authorize the password reset process.
+     * @param request request The `` parameter is an instance of the
+     * `Symfony\Component\HttpFoundation\Request` class. It represents the current HTTP request and
+     * contains information such as the request method, headers, query parameters, and request body. It
+     * is used to handle and process the form submission in this code snippet.
+     * 
+     * @return Response a Response object.
+     */
+    #[Route('reset/{token}', methods:['GEt', 'POST'] ,name: 'app_reset_step_2')]
     public function resetPassword2(
-        $token,
+        string $token,
         request $request
     ): Response {
         if ($token && !$this->jwt->isExpired($token)) {

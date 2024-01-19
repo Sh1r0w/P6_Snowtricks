@@ -20,6 +20,9 @@ class ProfilController extends AbstractController
 {
     private $user;
 
+    /**
+     * The function is a constructor that initializes several dependencies for a PHP class.
+     */
     public function __construct(
         private Security $security,
         private ImgService $img,
@@ -32,7 +35,17 @@ class ProfilController extends AbstractController
     }
 
 
-    #[Route('/profil', name: 'app_profil')]
+    /**
+     * This PHP function handles the logic for updating a user's profile and password, including image
+     * upload and folder renaming.
+     * 
+     * @param Request request The `` parameter is an instance of the `Request` class, which
+     * represents an HTTP request. It contains information about the request, such as the request
+     * method, headers, query parameters, and request body.
+     * 
+     * @return Response a Response object.
+     */
+    #[Route('/profil', methods:['GET', 'POST'], name: 'app_profil')]
     public function index(Request $request): Response
     {
 
@@ -49,9 +62,9 @@ class ProfilController extends AbstractController
             $passForm->handleRequest($request);
 
             if ($profilForm->isSubmitted() && $profilForm->isValid()) {
-                if ($profilForm->get('imguser')->getData() != false) {
+                if ($profilForm->get('imguser')->getData()) {
 
-                    if ($this->user->getImguser() != null) {
+                    if ($this->user->getImguser()) {
                         self::deleteImg();
                     }
 
@@ -93,7 +106,13 @@ class ProfilController extends AbstractController
         }
     }
 
-    #[Route(path: 'deleteImgProfil', name: 'delete_img_profil')]
+    /**
+     * The function "deleteImg" deletes the profile image of a user and redirects them to their profile
+     * page.
+     * 
+     * @return Response a Response object.
+     */
+    #[Route(path: 'deleteImgProfil', methods:['GET'],name: 'delete_img_profil')]
     public function deleteImg(): Response
     {
         if ($this->getUser()) {

@@ -22,6 +22,9 @@ use App\Form\UpdateFigureType;
 
 class FigureController extends AbstractController
 {
+    /**
+     * The function is a constructor that initializes several dependencies for a PHP class.
+     */
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ImgService $img,
@@ -33,7 +36,21 @@ class FigureController extends AbstractController
         $this->params = $params;
     }
 
-    #[Route('/figure/{slug}', name: 'detail_figure')]
+    /**
+     * This PHP function handles the display and submission of comments for a specific figure,
+     * including pagination and form validation.
+     * 
+     * @param Request request The `` parameter is an instance of the `Request` class, which
+     * represents an HTTP request. It contains information about the request, such as the request
+     * method, headers, query parameters, and request body.
+     * @param figure The "figure" parameter is a nullable instance of the Figure class. It represents a
+     * specific figure object that is being requested. If the figure is not found, it will be null.
+     * @param commentRepository The `` parameter is an instance of the
+     * `CommentRepository` class. It is used to retrieve and manipulate comment data from the database.
+     * 
+     * @return Response a Response object.
+     */
+    #[Route('/figure/{slug}', methods: ['GET', 'POST'], name: 'detail_figure')]
     public function index(
         Request $request,
         ?Figure $figure,
@@ -69,21 +86,35 @@ class FigureController extends AbstractController
             return $this->redirectToRoute('detail_figure', array('slug' => $figure->getSlug()));
 
         }
-
+        if($figure){
         $getComment =  $commentRepository->findCommentPaginated($page, $figure->getId(), 10);
-
 
         return $this->render('figure/index.html.twig', [
             'commentForm' => $commentForm->createView(),
             'figure' => $figure,
             'getComment' => $getComment,
         ]);
+        }else{
+            $this->addFlash(
+            'error',
+            'Tricks inconnue'
+            );
+            return $this->redirectToRoute('app_home');
+        }
     }
 
-    #[Route('/delete/{id}', name: 'delete_figure')]
+    /**
+     * This PHP function deletes a figure and its associated image from the database, and redirects the
+     * user to the home page.
+     * 
+     * @param figure The parameter "figure" is of type "Figure" and is nullable. It is used to
+     * represent a figure object that will be deleted.
+     * 
+     * @return Response a Response object.
+     */
+    #[Route('/delete/{id}', methods: ['GET'], name: 'delete_figure')]
     public function delete( ?Figure $figure ): Response {
 
-        //self::unknow($figure);
         if (!is_null($this->getUser())) {
             if ($figure->getImage()[0]) {
                 $this->img->delete($figure->getImage()[0]->getName(), $figure->getTitle());
@@ -102,7 +133,20 @@ class FigureController extends AbstractController
     }
 
     //#[Route('/update/{figure}', name: 'update_figure')]
-    #[Route('/update/{figure}', name: 'update_figure')]
+    /**
+     * This PHP function updates a figure entity with new data, including images and videos, and saves
+     * it to the database.
+     * 
+     * @param Request request The `` parameter is an instance of the `Request` class, which
+     * represents an HTTP request. It contains information about the request, such as the request
+     * method, headers, and request data.
+     * @param figure The "figure" parameter is a placeholder for the figure object that is being
+     * updated. It is passed as a route parameter in the URL. The figure object is retrieved from the
+     * database based on the provided identifier.
+     * 
+     * @return Response a Response object.
+     */
+    #[Route('/update/{figure}', methods: ['GET', 'POST'] ,name: 'update_figure')]
     public function update(
         Request $request,
         ?Figure $figure
@@ -134,10 +178,14 @@ class FigureController extends AbstractController
                 }
 
                 if($videos){
-                    $control = explode("/", $videos);
-                    if($control[3] != 'embed')
+                    $control = preg_split("/[\/=]/", $videos);
+                    unset($control[array_search("watch?v", $control)]);
+
+
+                    if(!array_search("embed", $control))
                     {
-                        $addEmbed = str_replace($control[2], $control[2] . '/embed', $videos);
+                        $addEmbed = 'https://'. $control[2] . '/embed/' . end($control);
+
                         $video = new Video();
                         $video->setName($addEmbed);
                         $figure->addVideo($video);
@@ -170,7 +218,19 @@ class FigureController extends AbstractController
         ]);
     }
 
-    #[Route(path: 'deleteImg/{figure}/{id}', name: 'delete_img')]
+    /**
+     * This PHP function deletes an image, removes it from the database, and displays a success or
+     * error message.
+     * 
+     * @param Image image The `` parameter is an instance of the `Image` class, which represents
+     * an image entity in the database. It is used to identify the specific image that needs to be
+     * deleted.
+     * @param figure The "figure" parameter is an optional parameter of type Figure. It represents the
+     * figure object associated with the image being deleted.
+     * 
+     * @return Response a Response object.
+     */
+    #[Route(path: 'deleteImg/{figure}/{id}', methods: ['GET'] , name: 'delete_img')]
     public function deleteImg(
         Image $image,
         ?Figure $figure
@@ -191,7 +251,18 @@ class FigureController extends AbstractController
 
     }
     
-    #[route(path:'deleteVideo/{figure}/{id}', name: 'delete_video')]
+    /**
+     * This PHP function deletes a video and redirects to the update figure page with a success flash
+     * message.
+     * 
+     * @param Figure figure The "figure" parameter is an instance of the Figure class. It is used to
+     * identify the figure for which the video needs to be deleted.
+     * @param Video video The "video" parameter is an instance of the Video class. It represents the
+     * video that needs to be deleted.
+     * 
+     * @return Response a Response object.
+     */
+    #[route(path:'deleteVideo/{figure}/{id}', methods: ['GET'], name: 'delete_video')]
     public function deleteVideo(Figure $figure, Video $video): Response
 {
     $this->entityManager->remove($video);

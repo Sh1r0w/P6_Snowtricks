@@ -20,7 +20,7 @@ class Comment
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\ManyToOne(cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Connect::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Connect $connect = null;
 
