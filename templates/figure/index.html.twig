@@ -15,14 +15,16 @@
                 </h1>
                 <div class="card-body">
                     {% if figure.image[0] is defined %}
+                        <div class="d-flex justify-content-center">
                         <img class="card-img-top imgDetail img-thumbnail mb-5" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
+                        </div>
                             <div class="d-flex flex-wrap flex-md-nowrap">
-                                <div class="w-100 m-2">
+                                <div class="justify-content-center <-100> m-2">
                                     <div id="carouselImg" class="carousel slide">
                                         <div class="carousel-inner">
                                             {% for image in figure.image %}
                                                 <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                                    <img class="w-100" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}">
+                                                    <img class="" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}">
                                                     </div>
                                                 
                                             {% endfor %}
@@ -81,7 +83,7 @@
                                 {% endif %}
                             </div>
                             <div>
-                                {{ figure.description }}
+                                {{ figure.description|nl2br }}
                             </div>
                         </div>
                         <div class="card-footer">
@@ -92,9 +94,6 @@
                             {{ form_row(commentForm.comment) }}
                             <button type="submit" class="btn btn-primary">
                                 Envoyer
-                                                                                                                            
-                                                                                            
-                                                            
                             </button>
                             {{ form_end(commentForm) }}
                         {% endif %}
@@ -104,7 +103,7 @@
                             
                             {% for c in getComment.data %}
                                 <div>
-                                    {{ c.comment }}
+                                    {{ c.comment|nl2br }}
                                     {{ c.date|date("H:m:s d/m/Y") }}
                                 </div>
                             {% endfor %}
