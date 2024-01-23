@@ -70,7 +70,7 @@ class FigureController extends AbstractController
             $user = $this->getUser()->getId();
             $connect = $this->entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
             $figure = $this->entityManager->getRepository(Figure::class)->findOneBy(['slug' => $figure->getSlug()]);
-
+            
             $comment->setComment($comment->getComment())
                 ->setConnect($connect)
                 ->setFigure($figure);

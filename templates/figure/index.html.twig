@@ -9,17 +9,28 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="card align-items-center">
+            <div class="card align-items-center mt-4 pt-4">
                 <h1>
                     {{ figure.title }}
                 </h1>
                 <div class="card-body">
+                    {% if app.user %}
+                        <div class="d-flex iconCard position-absolute z-2">
+                            <a class="nav-link m-1" href="{{ path('update_figure', {figure: figure.id}) }}">
+                                <i class="fa-solid fa-pencil"></i>
+                            </a>
+                            <a class="nav-link m-1" href="{{ path('delete_figure', {id: figure.id}) }}" onclick="return confirm('Voulez vous vraiment supprimer {{ figure.title }} ?')">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="d-flex justify-content-center">
                     {% if figure.image[0] is defined %}
-                        <div class="d-flex justify-content-center">
+                        
                         <img class="card-img-top imgDetail img-thumbnail mb-5" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
                         </div>
                             <div class="d-flex flex-wrap flex-md-nowrap">
-                                <div class="justify-content-center <-100> m-2">
+                                <div class="justify-content-center <-100>">
                                     <div id="carouselImg" class="carousel slide">
                                         <div class="carousel-inner">
                                             {% for image in figure.image %}
@@ -56,7 +67,7 @@
                                             <div class="carousel-inner">
                                                 {% for video in figure.videos %}
                                                     <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                                        <iframe class="w-100 offset-md-1 m-4" src="{{ video.name }}" frameborder="0"></iframe>
+                                                        <iframe class="w-100 ms-3" src="{{ video.name }}" frameborder="0"></iframe>
                                                     </div>
                                                 {% endfor %}
                                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideo" data-bs-slide="prev">
@@ -87,8 +98,15 @@
                             </div>
                         </div>
                         <div class="card-footer">
+                            Crée le : 
                             {{ figure.DatetimeAdd|date("H:m:s d/m/Y") }}
+                            {% if figure.DateUpdate != null %}
+                                Modifié le : 
+                                {{ figure.DateUpdate|date("H:m:s d/m/Y")}}
+                                {% endif %}
+
                         </div>
+                        
                         {% if app.user %}
                             {{ form_start(commentForm) }}
                             {{ form_row(commentForm.comment) }}
@@ -99,15 +117,22 @@
                         {% endif %}
                         <div class="justify-content-center">
                             {% if getComment %}
-                                
-                            
+                                <table class="table table-Secondary table-striped mt-4">
+                                    
                             {% for c in getComment.data %}
-                                <div>
-                                    {{ c.comment|nl2br }}
-                                    {{ c.date|date("H:m:s d/m/Y") }}
-                                </div>
+                                <tr>
+                                    <th scope="row">
+                                    <td>{{ c.comment|nl2br }}</td>
+                                    <td>
+                                        {% if c.connect.imguser != null %}
+                                            <img class="imgUserFigure" src="{{ asset('assets/uploads/') ~ c.connect.username ~ ('/') ~ c.connect.imguser }}" alt="">
+                                        {% endif %}
+                                    {{ c.connect.username }}
+                                    {{ c.date|date("H:m:s d/m/Y") }}</td>
+                                    </th>
+                               </tr>
                             {% endfor %}
-                            
+                            </table>
                             <hr></div>
                             {% set path = 'detail_figure' %}
                             {% set pages = getComment.pages %}
