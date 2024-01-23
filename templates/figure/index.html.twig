@@ -118,20 +118,24 @@
                         <div class="justify-content-center">
                             {% if getComment %}
                                 <table class="table table-Secondary table-striped mt-4">
-                                    
+                                    <tbody> 
                             {% for c in getComment.data %}
+                                
                                 <tr>
-                                    <th scope="row">
-                                    <td>{{ c.comment|nl2br }}</td>
-                                    <td>
+
+                                    <td class="col-8">{{ c.comment|nl2br }}</td>
+                                    <td> Auteur : 
                                         {% if c.connect.imguser != null %}
                                             <img class="imgUserFigure" src="{{ asset('assets/uploads/') ~ c.connect.username ~ ('/') ~ c.connect.imguser }}" alt="">
                                         {% endif %}
-                                    {{ c.connect.username }}
-                                    {{ c.date|date("H:m:s d/m/Y") }}</td>
-                                    </th>
+                                    {{ c.connect.username }}</br>
+                                    
+                                    Crée le : {{ c.date|date("H:m:s d/m/Y") }}</td>
+   
                                </tr>
+                               
                             {% endfor %}
+                            </tbody>
                             </table>
                             <hr></div>
                             {% set path = 'detail_figure' %}
