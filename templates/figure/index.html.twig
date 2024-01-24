@@ -97,12 +97,16 @@
                                 {{ figure.description|nl2br }}
                             </div>
                         </div>
+
                         <div class="card-footer">
-                            Crée le : 
-                            {{ figure.DatetimeAdd|date("H:m:s d/m/Y") }}
+                            {% for c in cat %}
+                            Dans la catégories des {{ c.category }}
+                             {% endfor %}
+                            Crée le :
+                            {{ figure.DatetimeAdd|date("d/m/Y") }} à {{ figure.DatetimeAdd|date("H:m:s") }}
                             {% if figure.DateUpdate != null %}
                                 Modifié le : 
-                                {{ figure.DateUpdate|date("H:m:s d/m/Y")}}
+                                {{ figure.DateUpdate|date("d/m/Y")}} à {{ figure.DateUpdate|date("H:m:s")}}
                                 {% endif %}
 
                         </div>
@@ -123,14 +127,14 @@
                                 
                                 <tr>
 
-                                    <td class="col-8">{{ c.comment|nl2br }}</td>
+                                    <td class="col-8 text-center">{{ c.comment|nl2br }}</td>
                                     <td> Auteur : 
                                         {% if c.connect.imguser != null %}
                                             <img class="imgUserFigure" src="{{ asset('assets/uploads/') ~ c.connect.username ~ ('/') ~ c.connect.imguser }}" alt="">
                                         {% endif %}
                                     {{ c.connect.username }}</br>
                                     
-                                    Crée le : {{ c.date|date("H:m:s d/m/Y") }}</td>
+                                    Crée le : {{ c.date|date("d/m/Y") }} à {{ c.date|date("H:m:s") }}</td>
    
                                </tr>
                                
