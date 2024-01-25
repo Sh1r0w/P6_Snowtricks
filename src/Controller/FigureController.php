@@ -15,6 +15,7 @@ use App\Entity\Video;
 use App\Entity\Figure;
 use App\Entity\Connect;
 use App\Entity\Comment;
+use App\Entity\Categories;
 use App\Services\ImgService;
 use App\Form\CommentType;
 use App\Controller\HomeController;
@@ -70,7 +71,7 @@ class FigureController extends AbstractController
             $user = $this->getUser()->getId();
             $connect = $this->entityManager->getRepository(Connect::class)->findOneBy(['id' => $user]);
             $figure = $this->entityManager->getRepository(Figure::class)->findOneBy(['slug' => $figure->getSlug()]);
-
+            
             $comment->setComment($comment->getComment())
                 ->setConnect($connect)
                 ->setFigure($figure);
@@ -88,10 +89,12 @@ class FigureController extends AbstractController
         }
         if($figure){
         $getComment =  $commentRepository->findCommentPaginated($page, $figure->getId(), 10);
-
+        $getCat = $this->entityManager->getRepository(Categories::class)->findBy(['id' => $figure->getCategories()]);
+            
         return $this->render('figure/index.html.twig', [
             'commentForm' => $commentForm->createView(),
             'figure' => $figure,
+            'cat' => $getCat,
             'getComment' => $getComment,
         ]);
         }else{
