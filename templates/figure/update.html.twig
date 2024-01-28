@@ -2,13 +2,13 @@
 {% block title %}Mise à jour de {{ figure.title }}{% endblock %}
 
 {% block body %}
-    <div class="container d-flex">
+    <div class="container d-flex card">
         <div class="row">
     <h1>Mise à jour de {{ figure.title }}</h1>
     
     {{ form_start(updateForm) }}
         {{ form_row(updateForm.title, {'value' : figure.title}) }}
-        {{ form_row(updateForm.description, {'value' : figure.description}) }}
+        {{ form_row(updateForm.description, {'value' : figure.description, 'attr': {'style': 'height: 300px'} }) }}
         {{ form_row(updateForm.categories) }}
         {{ form_row(updateForm.image) }}
         {{ form_row(updateForm.videos) }}
@@ -16,24 +16,38 @@
     {{ form_end(updateForm) }}
     </div>
     
-    <div class="row flex-column">
+    <div class="row card m-5">
+        <h5 class="card-title">
+            Image(s)
+        </h5>
     {% if figure.image[0] is defined %}
+        <div class="d-flex overflow-auto ">
     {% for image in figure.image %}
-        <img class="updateImg" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{figure.title}}">
+        <div class="d-flex align-items-center flex-column m-2">
+        <img class="" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{figure.title}}"></br>
         <a class="text-decoration-none" href="{{ path('delete_img', {figure: figure.id, id: image.id} ) }}">
-        <button type="submit"> Supprimer </button>
+        <button type="submit" onclick="return confirm('Voulez vous vraiment supprimer ?')"> Supprimer </button>
         </a>
+        </div>
     {% endfor %}
+        </div>
     {% endif %}
     </div>
-    <div class="row flex-column">
+    <div class="row card m-5">
+        <h5 class="card-title">
+            Video(s)
+        </h5>
         {% if figure.videos is defined %}
+            <div class="d-flex overflow-auto ">
             {% for v in figure.videos%}
-                <iframe src="{{ v.name }}" frameborder="0"></iframe>
+                <div class="d-flex align-items-center flex-column m-2">
+                <iframe src="{{ v.name }}" frameborder="0"></iframe></br>
                 <a class="text-decoration-none" href="{{ path('delete_video', {figure: figure.id, id: v.id} ) }}">
-            <button type="submit"> Supprimer </button>
+                <button type="submit" onclick="return confirm('Voulez vous vraiment supprimer ?')"> Supprimer </button>
             </a>
+            </div>
             {% endfor %}
+            </div>
         {% endif %}
     </div>
     </div>

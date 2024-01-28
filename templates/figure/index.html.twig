@@ -29,13 +29,13 @@
                         
                         <img class="card-img-top imgDetail img-thumbnail mb-5" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/') ~ figure.image[0].name }}" alt="{{ figure.title }}">
                         </div>
-                            <div class="d-flex flex-wrap flex-md-nowrap">
-                                <div class="justify-content-center <-100>">
+                            <div class="d-flex flex-wrap flex-md-nowrap justify-content-center">
+                                <div class="">
                                     <div id="carouselImg" class="carousel slide">
                                         <div class="carousel-inner">
                                             {% for image in figure.image %}
                                                 <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                                    <img class="" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}">
+                                                    <img class="img-fluid" src="{{ asset('assets/uploads/') ~ figure.title ~ ('/mini/300x300-') ~ image.name }}" alt="{{ figure.title }}">
                                                     </div>
                                                 
                                             {% endfor %}
@@ -62,12 +62,13 @@
                                     </div>
                                 {% endif %}
                                 {% if figure.videos is defined %}
-                                    <div class="w-100">
+                                    <div class="">
                                         <div id="carouselVideo" class="carousel slide">
                                             <div class="carousel-inner">
+                                                
                                                 {% for video in figure.videos %}
-                                                    <div class="carousel-item {{ (loop.first) ? 'active' : '' }}">
-                                                        <iframe class="w-100 ms-3" src="{{ video.name }}" frameborder="0"></iframe>
+                                                    <div class="carousel-item {{ (loop.first) ? 'active' : '' }} ">
+                                                        <iframe class="w-100 ms-md-3 mt-2 mt-md-0" src="{{ video.name }}" frameborder="0"></iframe>
                                                     </div>
                                                 {% endfor %}
                                                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselVideo" data-bs-slide="prev">
@@ -93,14 +94,17 @@
                                     </div>
                                 {% endif %}
                             </div>
-                            <div>
+                            <div class="mt-5">
+                                <h3>Description du "{{figure.title}}"</h3> </br>
+                                
                                 {{ figure.description|nl2br }}
+                                
                             </div>
                         </div>
 
-                        <div class="card-footer">
+                        <div class="card-footer mt-3">
                             {% for c in cat %}
-                            Dans la catégories des {{ c.category }}
+                            Dans la catégories des <b>"{{ c.category }}"</b>
                              {% endfor %}
                             Crée le :
                             {{ figure.DatetimeAdd|date("d/m/Y") }} à {{ figure.DatetimeAdd|date("H:m:s") }}

@@ -1,6 +1,6 @@
 .home_banner {
  width: 100%;
- top: 0;
+ top: -50px;
  color: white;
 }
 
@@ -27,12 +27,6 @@
 .imgDetail {
   max-width: 650px;
   height: auto;
-}
-
-.updateImg {
-  max-width: 50%;
-  height: auto;
-  margin: 25px;
 }
 
 iframe {
