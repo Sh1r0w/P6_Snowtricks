@@ -43,3 +43,6 @@ iframe {
   width: 10%;
 }
 
+#iconUp {
+  display: none;
+}
