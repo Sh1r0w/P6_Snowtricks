@@ -34,7 +34,8 @@ class FigureFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function createTricks(string $name, $category, ObjectManager $manager){
+    public function createTricks(string $name,Object $category, ObjectManager $manager): Object
+    {
 
         $faker = Faker\Factory::create('fr_FR');
 
