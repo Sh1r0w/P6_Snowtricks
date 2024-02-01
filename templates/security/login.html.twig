@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-    Log in!
+    Connexion
     
 {% endblock %}
 {% block body %}
@@ -10,7 +10,7 @@
                 <div class="col-md-4 mt-5">
                     {% if error %}
                         <div class="alert alert-danger">
-                            {{ error.messageKey|trans(error.messageData, 'security') }}
+                            Identifiant / Mot de passe incorrect
                         </div>
                     {% endif %}
                     {% if app.user %}
@@ -37,7 +37,7 @@
                         </label>
                         <input type="texte" value="{{ last_username }}" name="username" id="inputUsername" class="form-control m-2" autocomplete="username" required autofocus>
                             <label for="inputPassword">
-                                Password
+                                Mot de passe
                                                     
                             </label>
                             <input type="password" name="password" id="inputPassword" class="form-control m-2" autocomplete="current-password" required>

@@ -1,19 +1,25 @@
 {% extends 'base.html.twig' %}
-{% block title %}{% endblock %}
-
+{% block title %}
+    Crée une Tricks
+{% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
-    <h1>Add Figure</h1>
-    
-    {{ form_start(figureForm) }}
-        {{ form_row(figureForm.title) }}
-        {{ form_row(figureForm.description) }}
-        {{ form_row(figureForm.categories) }}
-        {{ form_row(figureForm.image) }}
-        {{ form_row(figureForm.videos) }}
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
-    {{ form_end(figureForm) }}
-    </div>
+            <h1 class="text-center">
+                Crée une Tricks
+            </h1>
+            <div class="card p-4">
+                {{ form_start(figureForm) }}
+                {{ form_row(figureForm.title) }}
+                {{ form_row(figureForm.description) }}
+                {{ form_row(figureForm.categories) }}
+                {{ form_row(figureForm.image) }}
+                {{ form_row(figureForm.videos) }}
+                <button type="submit" class="btn btn-primary">
+                    Enregistrer
+                </button>
+                {{ form_end(figureForm) }}
+            </div>
+        </div>
     </div>
 {% endblock %}

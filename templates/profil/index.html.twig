@@ -5,18 +5,19 @@
 {% block body %}
     
 <div class="container">
-    <h1>Bienvenue sur votre profil {{ app.user.username }}</h1>
-
+    <h1 class="text-center">Bienvenue sur votre profil {{ app.user.username }}</h1>
+    <div class="card">
     {% if app.user.imguser != null %}
-        <div class="container">
-        <img class="img-thumbnail" src="{{ asset('assets/uploads/') ~ app.user.username ~ ('/mini/250x250-') ~ app.user.imguser }}" alt="{{ app.user.username }}">
+        
+        <div class="card-img d-flex flex-column align-items-center mt-5">
+        <img class="img-thumbnail" src="{{ asset('assets/uploads/') ~ app.user.username ~ ('/mini/250x250-') ~ app.user.imguser }}" alt="{{ app.user.username }}"></br>
         <a class="text-decoration-none" href="{{ path('delete_img_profil') }}">
         <button type="submit"> Supprimer </button>
         </a>
         </div>
     {% endif %}
     
-    
+    <div class="card-body">
 
     {{ form_start(profilForm) }}
     {{ form_row(profilForm.username)}}
@@ -28,5 +29,7 @@
     </button>
     {{ form_end(profilForm) }}
     {% include '_partials/modalProfil.html.twig' %}
+        </div>
+        </div>
 </div>
 {% endblock %}

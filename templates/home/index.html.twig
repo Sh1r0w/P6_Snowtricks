@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 {% block title %}
     SnowTricks
-                
-        
-    
 {% endblock %}
+
+
+
 {% block body %}
-    <div class="home_banner  text-center position-relative">
+    <div class="home_banner  text-center position-relative">  
         <img class=" img-fluid w-100" src="{{ asset('assets/uploads/snow.jpg') }}" alt="">
             <div class=" overlay d-flex position-absolute justify-content-center align-items-center">
                 <form action="{{ path('add_figure') }}">
@@ -24,9 +24,14 @@
                 </form>
             </div>
         </div>
+        <div class="fixed-bottom d-lg-flex justify-content-end m-5 d-none ">
+            <a id="iconDown"  href="#tricks" class="text-reset"><i class="fa-solid fa-circle-arrow-down fa-2xl" ></i></a>
+            <a id="iconUp" href="#body" class="text-reset"><i class="fa-solid fa-circle-arrow-up fa-2xl"></i></a>
+        </div>
         <div class="row m-0">
             <div class="col">
-                <div class="d-flex flex-wrap justify-content-center">
+                
+                <div id="tricks" class="d-flex flex-wrap justify-content-center">
                     {% for f in figures %}
                         <div class="card col-lg-2 m-2">
                             <a class="nav-link" href="{{ path('app_home') ~ ('figure/') ~ f.slug }}">

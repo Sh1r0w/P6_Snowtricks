@@ -15,7 +15,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('comment', options: [
-                'label' => 'Votre commentaire'
+                'label' => 'Ajouter un commentaire'
                 ])
         ;
     }
