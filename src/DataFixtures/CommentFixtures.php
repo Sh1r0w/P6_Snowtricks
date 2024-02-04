@@ -10,6 +10,15 @@ use Faker;
 
 class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
+    /**
+     * This function loads 155 comments into the database with random text, a user reference, a current
+     * date, and a figure reference.
+     * 
+     * @param ObjectManager manager The `` parameter is an instance of the `ObjectManager`
+     * class. It is responsible for managing the persistence of objects in the database. It provides
+     * methods like `persist()` to save new objects and `flush()` to persist all changes to the
+     * database.
+     */
     public function load(ObjectManager $manager): void
     {
         $faker = Faker\Factory::create('fr_FR');
@@ -26,6 +35,11 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * The function returns an array of dependencies for a PHP class.
+     * 
+     * @return array An array containing the class FigureFixtures.
+     */
     public function getDependencies(): array
     {
         return [

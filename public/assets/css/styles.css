@@ -1,6 +1,5 @@
 .home_banner {
- width: 100%;
- top: -50px;
+ top: -100px;
  color: white;
 }
 
@@ -35,8 +34,4 @@ iframe {
 
 .imgUserFigure {
   width: 10%;
-}
-
-#iconUp {
-  display: none;
 }
