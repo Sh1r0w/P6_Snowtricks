@@ -25,7 +25,7 @@ class ImgFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
-    public function createImg(string $name, Object $ref, ObjectManager $manager) {
+    public function createImg(string $name, Object $ref, ObjectManager $manager): Object {
         $image = new Image();
             $image->setName($name.'.webp');
             $image->setFigure($ref);
