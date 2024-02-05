@@ -30,9 +30,9 @@
         <div class="row m-0">
             <div class="col">
                 
-                <div id="tricks" class="d-flex flex-wrap justify-content-center flex-column flex-lg-row">
+                <div id="tricks" class="d-flex flex-wrap  align-items-center justify-content-center flex-column flex-lg-row">
                     {% for f in figures %}
-                        <div class="card col-lg-2 m-2">
+                        <div class="card col-9 col-lg-2 m-2">
                             <a class="nav-link" href="{{ path('app_home') ~ ('figure/') ~ f.slug }}">
                                 {% if f.image[0] is defined %}
                                     <img class="card-img-top" src="{{ asset('assets/uploads/') ~ f.title ~ ('/mini/300x300-') ~ f.image[0].name }}" alt="{{ f.title }}">

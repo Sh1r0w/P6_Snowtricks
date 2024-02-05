@@ -1,6 +1,10 @@
 .home_banner {
- top: -100px;
+ top: -50px;
  color: white;
+}
+
+.home_banner img{
+  max-height: 1240px;
 }
 
 .overlay {
