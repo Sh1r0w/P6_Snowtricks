@@ -1,7 +1,10 @@
 .home_banner {
- width: 100%;
  top: -50px;
  color: white;
+}
+
+.home_banner img{
+  max-height: 1240px;
 }
 
 .overlay {
@@ -35,8 +38,4 @@ iframe {
 
 .imgUserFigure {
   width: 10%;
-}
-
-#iconUp {
-  display: none;
 }

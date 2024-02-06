@@ -89,7 +89,7 @@ class ImgService extends AbstractController
                 $src_y = 0;
                 break;
             case 1:
-                $squareSize = $imageWidth;
+                $squareSize = $imageHeight;
                 $src_x = ($imageWidth - $squareSize) / 2;
                 $src_y = 0;
                 break;
@@ -235,6 +235,8 @@ class ImgService extends AbstractController
      * @param newFolder The new name for the folder that you want to rename.
      */
     public function renameFolder(string $oldFolder,string $newFolder): void{
+        if(file_exists($oldFolder)){
         rename($this->path . $oldFolder, $this->path . $newFolder);
+    }
     }
 }
