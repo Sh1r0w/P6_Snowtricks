@@ -58,3 +58,12 @@ An administrator account will be automatically created:
 
 Login: admin
 Password: admin (password can be modified in the profile section)
+
+5 - Launch the site: 
+type the following command in the terminal 
+
+"symfony server:start" 
+
+and then connect to the address 127.0.0.1:8000.
+
+
